@@ -14,8 +14,6 @@
         * **function** glGetInteger( **const** Name_:GLenum ) :GLint;
 
 * TOpenGL = **class**( TInterfacedObject, IOpenGL )
-        * **constructor** Create;
-        * **destructor** Destroy;
     * プロパティ
         * **property** PFD :TPixelFormatDescriptor
         * **property** PFI :Integer
@@ -23,6 +21,8 @@
     * 定数
         * **class function** DefaultPFD :TPixelFormatDescriptor;
     * メソッド
+        * **constructor** Create;
+        * **destructor** Destroy;
         * **procedure** BeginGL;
         * **procedure** EndGL;
         * **procedure** InitOpenGL;
