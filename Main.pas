@@ -120,8 +120,6 @@ begin
 end;
 
 procedure TForm1.MakeMatery;
-var
-   X, Y, Z :Integer;
 begin
      _Matery := TGLMateryImagG.Create;
 
