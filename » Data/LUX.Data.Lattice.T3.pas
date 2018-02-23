@@ -7,9 +7,10 @@ uses System.SysUtils, System.Classes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TArray3D<_TItem_>     = class;
-     TBricArray3D<_TItem_> = class;
-     TGridArray3D<_TItem_> = class;
+     TArray3D<_TItem_>             = class;
+     TBricArray3D<_TItem_>         = class;
+     TGridArray3D<_TItem_>         = class;
+     TBricIterGridArray3D<_TItem_> = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -230,6 +231,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetBricsY( const BricsY_:Integer );
        function GetBricsZ :Integer;
        procedure SetBricsZ( const BricsZ_:Integer );
+       function NewBricIter :TBricIterGridArray3D<_TItem_>; virtual;
      public
        constructor Create( const BricsX_,BricsY_,BricsZ_,MargsX_,MargsY_,MargsZ_:Integer ); override;
        destructor Destroy; override;
@@ -244,6 +246,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
        procedure Read( const Stream_:TStream ); override;
        procedure Write( const Stream_:TStream ); override;
+       procedure ForBrics( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+       procedure ForEdgesX( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+       procedure ForEdgesY( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+       procedure ForEdgesZ( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBricIterGridArray3D<_TItem_>
@@ -255,15 +261,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetPos( const Pos_:TInteger3D );
        function GetGrids( const X_,Y_,Z_:Shortint ) :_TItem_;
        procedure SetGrids( const X_,Y_,Z_:Shortint; const Item_:_TItem_ );
-       function GetGX( const I_:Shortint ) :Integer;
-       function GetGY( const I_:Shortint ) :Integer;
-       function GetGZ( const I_:Shortint ) :Integer;
+       function GetGiX( const I_:Shortint ) :Integer;
+       function GetGiY( const I_:Shortint ) :Integer;
+       function GetGiZ( const I_:Shortint ) :Integer;
      {public}
        property Pos                              :TInteger3D read GetPos   write SetPos  ;
        property Grids[ const X_,Y_,Z_:Shortint ] :_TItem_    read GetGrids write SetGrids; default;
-       property GX[ const I_:Shortint ]          :Integer    read GetGX;
-       property GY[ const I_:Shortint ]          :Integer    read GetGY;
-       property GZ[ const I_:Shortint ]          :Integer    read GetGZ;
+       property GiX[ const I_:Shortint ]         :Integer    read GetGiX;
+       property GiY[ const I_:Shortint ]         :Integer    read GetGiY;
+       property GiZ[ const I_:Shortint ]         :Integer    read GetGiZ;
        ///// メソッド
        procedure GoPrevX; overload;
        procedure GoNextX; overload;
@@ -277,7 +283,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure GoNextY( const N_:Integer ); overload;
        procedure GoPrevZ( const N_:Integer ); overload;
        procedure GoNextZ( const N_:Integer ); overload;
-       function InterpFrac( const Xd_,Yd_,Zd_:Single ) :_TItem_;
+       function FracInterp( const Xd_,Yd_,Zd_:Single ) :_TItem_;
        function Interp( const X_,Y_,Z_:Single ) :_TItem_;
      end;
 
@@ -288,7 +294,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected type
        _PItem_ = ^_TItem_;
      protected
-       _Array :TGridArray3D<_TItem_>;
+       _Paren :TGridArray3D<_TItem_>;
        _HeadZ :array [ -1..+2 ] of _PItem_;
        _HeadY :array [ -1..+2, -1..+2 ] of _PItem_;
        _Grids :array [ -1..+2, -1..+2, -1..+2 ] of _PItem_;
@@ -306,9 +312,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetPos( const Pos_:TInteger3D );
        function GetGrids( const X_,Y_,Z_:Shortint ) :_TItem_;
        procedure SetGrids( const X_,Y_,Z_:Shortint; const Item_:_TItem_ );
-       function GetGX( const I_:Shortint ) :Integer;
-       function GetGY( const I_:Shortint ) :Integer;
-       function GetGZ( const I_:Shortint ) :Integer;
+       function GetGiX( const I_:Shortint ) :Integer;
+       function GetGiY( const I_:Shortint ) :Integer;
+       function GetGiZ( const I_:Shortint ) :Integer;
+       function GetGi( const X_,Y_,Z_:Shortint ) :TInteger3D;
      public
        constructor Create( const Array_:TGridArray3D<_TItem_> );
        destructor Destroy; override;
@@ -318,9 +325,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property PosZ                             :Integer    read GetPosZ  write SetPosZ ;
        property Pos                              :TInteger3D read GetPos   write SetPos  ;
        property Grids[ const X_,Y_,Z_:Shortint ] :_TItem_    read GetGrids write SetGrids; default;
-       property GX[ const I_:Shortint ]          :Integer    read GetGX                  ;
-       property GY[ const I_:Shortint ]          :Integer    read GetGY                  ;
-       property GZ[ const I_:Shortint ]          :Integer    read GetGZ                  ;
+       property GiX[ const I_:Shortint ]         :Integer    read GetGiX                 ;
+       property GiY[ const I_:Shortint ]         :Integer    read GetGiY                 ;
+       property GiZ[ const I_:Shortint ]         :Integer    read GetGiZ                 ;
+       property Gi[ const X_,Y_,Z_:Shortint ]    :TInteger3D read GetGi                  ;
        ///// メソッド
        procedure GoPrevX; overload;
        procedure GoNextX; overload;
@@ -334,8 +342,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure GoNextY( const N_:Integer ); overload;
        procedure GoPrevZ( const N_:Integer ); overload;
        procedure GoNextZ( const N_:Integer ); overload;
-       function InterpFrac( const Xd_,Yd_,Zd_:Single ) :_TItem_; virtual; abstract;
+       function FracInterp( const Xd_,Yd_,Zd_:Single ) :_TItem_; virtual;
        function Interp( const X_,Y_,Z_:Single ) :_TItem_; virtual;
+       procedure ForBrics( const Proc_:TProc );
+       procedure ForEdgesX( const Proc_:TProc );
+       procedure ForEdgesY( const Proc_:TProc );
+       procedure ForEdgesZ( const Proc_:TProc );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -676,6 +688,13 @@ begin
      _ItemsZ  := BricsZ_ + 1;  MakeArray;
 end;
 
+//------------------------------------------------------------------------------
+
+function TGridArray3D<_TItem_>.NewBricIter :TBricIterGridArray3D<_TItem_>;
+begin
+     Result := TBricIterGridArray3D<_TItem_>.Create( Self );
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TGridArray3D<_TItem_>.Create( const BricsX_,BricsY_,BricsZ_,MargsX_,MargsY_,MargsZ_:Integer );
@@ -741,6 +760,52 @@ begin
      inherited;
 end;
 
+//------------------------------------------------------------------------------
+
+procedure TGridArray3D<_TItem_>.ForBrics( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+var
+   B :TBricIterGridArray3D<_TItem_>;
+begin
+     B := NewBricIter;
+
+     B.ForBrics( procedure begin Proc_( B ); end );
+
+     B.DisposeOf;
+end;
+
+procedure TGridArray3D<_TItem_>.ForEdgesX( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+var
+   E :TBricIterGridArray3D<_TItem_>;
+begin
+     E := NewBricIter;
+
+     E.ForEdgesX( procedure begin Proc_( E ); end );
+
+     E.DisposeOf;
+end;
+
+procedure TGridArray3D<_TItem_>.ForEdgesY( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+var
+   E :TBricIterGridArray3D<_TItem_>;
+begin
+     E := NewBricIter;
+
+     E.ForEdgesY( procedure begin Proc_( E ); end );
+
+     E.DisposeOf;
+end;
+
+procedure TGridArray3D<_TItem_>.ForEdgesZ( const Proc_:TConstProc<TBricIterGridArray3D<_TItem_>> );
+var
+   E :TBricIterGridArray3D<_TItem_>;
+begin
+     E := NewBricIter;
+
+     E.ForEdgesZ( procedure begin Proc_( E ); end );
+
+     E.DisposeOf;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBricIterGridArray3D<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -768,7 +833,7 @@ begin
                begin
                     _Grids[ Z, Y, X ] := _HeadY[ Z, Y ];
 
-                    Inc( _Grids[ Z, Y, X ], _GX[ X ] * _Array.CounStepX );
+                    Inc( _Grids[ Z, Y, X ], _GX[ X ] * _Paren.CounStepX );
                end;
           end;
      end;
@@ -791,7 +856,7 @@ begin
           begin
                _HeadY[ Z, Y ] := _HeadZ[ Z ];
 
-               Inc( _HeadY[ Z, Y ], _GY[ Y ] * _Array.CounStepY );
+               Inc( _HeadY[ Z, Y ], _GY[ Y ] * _Paren.CounStepY );
           end;
      end;
 end;
@@ -809,9 +874,9 @@ begin
      begin
           _GZ[ Z ] := PosZ_ + Z;
 
-          _HeadZ[ Z ] := _Array.ItemP[ 0, 0, 0 ];
+          _HeadZ[ Z ] := _Paren.ItemP[ 0, 0, 0 ];
 
-          Inc( _HeadZ[ Z ], _GZ[ Z ] * _Array.CounStepZ );
+          Inc( _HeadZ[ Z ], _GZ[ Z ] * _Paren.CounStepZ );
      end;
 end;
 
@@ -846,19 +911,29 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TBricIterGridArray3D<_TItem_>.GetGX( const I_:Shortint ) :Integer;
+function TBricIterGridArray3D<_TItem_>.GetGiX( const I_:Shortint ) :Integer;
 begin
      Result := _GX[ I_ ];
 end;
 
-function TBricIterGridArray3D<_TItem_>.GetGY( const I_:Shortint ) :Integer;
+function TBricIterGridArray3D<_TItem_>.GetGiY( const I_:Shortint ) :Integer;
 begin
      Result := _GY[ I_ ];
 end;
 
-function TBricIterGridArray3D<_TItem_>.GetGZ( const I_:Shortint ) :Integer;
+function TBricIterGridArray3D<_TItem_>.GetGiZ( const I_:Shortint ) :Integer;
 begin
      Result := _GZ[ I_ ];
+end;
+
+function TBricIterGridArray3D<_TItem_>.GetGi( const X_,Y_,Z_:Shortint ) :TInteger3D;
+begin
+     with Result do
+     begin
+          X := GiX[ X_ ];
+          Y := GiY[ Y_ ];
+          Z := GiZ[ Z_ ];
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -867,7 +942,7 @@ constructor TBricIterGridArray3D<_TItem_>.Create( const Array_:TGridArray3D<_TIt
 begin
      inherited Create;
 
-     _Array := Array_;
+     _Paren := Array_;
 
      Pos := TInteger3D.Create( 0, 0, 0 );
 end;
@@ -892,7 +967,7 @@ begin
           begin
                Move( _Grids[ Z, Y, -1 ], _Grids[ Z, Y, 0 ], 3 * SizeOf( _PItem_ ) );
 
-               Dec( _Grids[ Z, Y, -1 ], _Array.CounStepX );
+               Dec( _Grids[ Z, Y, -1 ], _Paren.CounStepX );
           end;
      end;
 end;
@@ -909,7 +984,7 @@ begin
           begin
                Move( _Grids[ Z, Y, 0 ], _Grids[ Z, Y, -1 ], 3 * SizeOf( _PItem_ ) );
 
-               Inc( _Grids[ Z, Y, +2 ], _Array.CounStepX );
+               Inc( _Grids[ Z, Y, +2 ], _Paren.CounStepX );
           end;
      end;
 end;
@@ -924,11 +999,11 @@ begin
 
      for Z := -1 to +2 do
      begin
-          Move( _HeadY[ Z, -1 ], _HeadY[ Z, 0 ],  3 * SizeOf( _PItem_ ) );  Dec( _HeadY[ Z, -1 ], _Array.CounStepY );
+          Move( _HeadY[ Z, -1 ], _HeadY[ Z, 0 ],  3 * SizeOf( _PItem_ ) );  Dec( _HeadY[ Z, -1 ], _Paren.CounStepY );
 
           Move( _Grids[ Z, -1 ], _Grids[ Z, 0 ], 12 * SizeOf( _PItem_ ) );
 
-          for X := -1 to +2 do Dec( _Grids[ Z, -1, X ], _Array.CounStepY );
+          for X := -1 to +2 do Dec( _Grids[ Z, -1, X ], _Paren.CounStepY );
      end;
 end;
 
@@ -940,11 +1015,11 @@ begin
 
      for Z := -1 to +2 do
      begin
-          Move( _HeadY[ Z, 0 ], _HeadY[ Z, -1 ],  3 * SizeOf( _PItem_ ) );  Inc( _HeadY[ Z, +2 ], _Array.CounStepY );
+          Move( _HeadY[ Z, 0 ], _HeadY[ Z, -1 ],  3 * SizeOf( _PItem_ ) );  Inc( _HeadY[ Z, +2 ], _Paren.CounStepY );
 
           Move( _Grids[ Z, 0 ], _Grids[ Z, -1 ], 12 * SizeOf( _PItem_ ) );
 
-          for X := -1 to +2 do Inc( _Grids[ Z, +2, X ], _Array.CounStepY );
+          for X := -1 to +2 do Inc( _Grids[ Z, +2, X ], _Paren.CounStepY );
      end;
 end;
 
@@ -956,13 +1031,13 @@ var
 begin
      Move( _GZ[ -1 ], _GZ[ 0 ], 3 * SizeOf( Integer ) );  Dec( _GZ[ -1 ] );
 
-     Move( _HeadZ[ -1 ], _HeadZ[ 0 ], 3 * SizeOf( _PItem_ ) );  Dec( _HeadZ[ -1 ], _Array.CounStepZ );
+     Move( _HeadZ[ -1 ], _HeadZ[ 0 ], 3 * SizeOf( _PItem_ ) );  Dec( _HeadZ[ -1 ], _Paren.CounStepZ );
 
      Move( _Grids[ -1 ], _Grids[ 0 ], 48 * SizeOf( _PItem_ ) );
 
      for Y := -1 to +2 do
      begin
-          for X := -1 to +2 do Dec( _Grids[ -1, Y, X ], _Array.CounStepZ );
+          for X := -1 to +2 do Dec( _Grids[ -1, Y, X ], _Paren.CounStepZ );
      end;
 end;
 
@@ -972,7 +1047,7 @@ var
 begin
      Move( _GZ[ 0 ], _GZ[ -1 ], 3 * SizeOf( Integer ) );  Inc( _GZ[ +2 ] );
 
-     Move( _HeadZ[ 0 ], _HeadZ[ -1 ], 3 * SizeOf( _PItem_ ) );  Inc( _HeadZ[ +2 ], _Array.CounStepZ );
+     Move( _HeadZ[ 0 ], _HeadZ[ -1 ], 3 * SizeOf( _PItem_ ) );  Inc( _HeadZ[ +2 ], _Paren.CounStepZ );
 
      Move( _Grids[ 0 ], _Grids[ -1 ], 48 * SizeOf( _PItem_ ) );
 
@@ -980,7 +1055,7 @@ begin
      begin
           for X := -1 to +2 do
           begin
-               Inc( _Grids[ +2, Y, X ], _Array.CounStepZ );
+               Inc( _Grids[ +2, Y, X ], _Paren.CounStepZ );
           end;
      end;
 end;
@@ -1031,6 +1106,11 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TBricIterGridArray3D<_TItem_>.FracInterp( const Xd_,Yd_,Zd_:Single ) :_TItem_;
+begin
+     Result := Grids[ 0, 0, 0 ];
+end;
+
 function TBricIterGridArray3D<_TItem_>.Interp( const X_,Y_,Z_:Single ) :_TItem_;
 var
    Xd, Yd, Zd :Single;
@@ -1039,7 +1119,101 @@ begin
      PosY := Floor( Y_ );  Yd := Y_ - PosY;
      PosX := Floor( X_ );  Xd := X_ - PosX;
 
-     Result := InterpFrac( Xd, Yd, Zd );
+     Result := FracInterp( Xd, Yd, Zd );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TBricIterGridArray3D<_TItem_>.ForBrics( const Proc_:TProc );
+var
+   X, Y, Z :Integer;
+begin
+     PosZ := 0;
+     for Z := 1 to _Paren.BricsZ do
+     begin
+          PosY := 0;
+          for Y := 1 to _Paren.BricsY do
+          begin
+               PosX := 0;
+               for X := 1 to _Paren.BricsX do
+               begin
+                    Proc_;
+
+                    GoNextX;
+               end;
+               GoNextY;
+          end;
+          GoNextZ;
+     end;
+end;
+
+procedure TBricIterGridArray3D<_TItem_>.ForEdgesX( const Proc_:TProc );
+var
+   X, Y, Z :Integer;
+begin
+     PosZ := 0;
+     for Z := 0 to _Paren.BricsZ do
+     begin
+          PosY := 0;
+          for Y := 0 to _Paren.BricsY do
+          begin
+               PosX := 0;
+               for X := 1 to _Paren.BricsX do
+               begin
+                    Proc_;
+
+                    GoNextX;
+               end;
+               GoNextY;
+          end;
+          GoNextZ;
+     end;
+end;
+
+procedure TBricIterGridArray3D<_TItem_>.ForEdgesY( const Proc_:TProc );
+var
+   X, Y, Z :Integer;
+begin
+     PosZ := 0;
+     for Z := 0 to _Paren.BricsZ do
+     begin
+          PosY := 0;
+          for Y := 1 to _Paren.BricsY do
+          begin
+               PosX := 0;
+               for X := 0 to _Paren.BricsX do
+               begin
+                    Proc_;
+
+                    GoNextX;
+               end;
+               GoNextY;
+          end;
+          GoNextZ;
+     end;
+end;
+
+procedure TBricIterGridArray3D<_TItem_>.ForEdgesZ( const Proc_:TProc );
+var
+   X, Y, Z :Integer;
+begin
+     PosZ := 0;
+     for Z := 1 to _Paren.BricsZ do
+     begin
+          PosY := 0;
+          for Y := 0 to _Paren.BricsY do
+          begin
+               PosX := 0;
+               for X := 0 to _Paren.BricsX do
+               begin
+                    Proc_;
+
+                    GoNextX;
+               end;
+               GoNextY;
+          end;
+          GoNextZ;
+     end;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
