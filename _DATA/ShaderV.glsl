@@ -2,31 +2,11 @@
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【共通定数】
 
-layout( std140 ) uniform TViewerScal
-{
-  layout( row_major ) mat4 _ViewerScal;
-};
-
-layout( std140 ) uniform TCameraProj
-{
-  layout( row_major ) mat4 _CameraProj;
-};
-
-layout( std140 ) uniform TCameraPose
-{
-  layout( row_major ) mat4 _CameraPose;
-};
-
-layout( std140 ) uniform TShaperPose
-{
-  layout( row_major ) mat4 _ShaperPose;
-};
-
-//------------------------------------------------------------------------------
-
 uniform sampler3D _Voxels;
 
-uniform sampler2D _Imager;
+const ivec3 _ElemGridsN = textureSize( _Voxels, 0 );
+const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
+const ivec3 _BricsN     = _ElemBricsN - ivec3( 2 );
 
 //############################################################################## ■
 
@@ -40,9 +20,8 @@ _Result;
 
 void main()
 {
-  const ivec3 _VoxelsN = textureSize( _Voxels, 0 ) - ivec3( 1 );
-  const int   SZ        = _VoxelsN.y * _VoxelsN.x;
-  const int   SY        =              _VoxelsN.x;
+  const int   SZ        = _BricsN.y * _BricsN.x;
+  const int   SY        =             _BricsN.x;
   const int   I         = gl_VertexID;
 
   ivec3 B;

@@ -45,6 +45,10 @@ layout( std140 ) uniform TShaperPose
 
 uniform sampler3D _Voxels;
 
+const ivec3 _ElemGridsN = textureSize( _Voxels, 0 );
+const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
+const ivec3 _BricsN     = _ElemBricsN - ivec3( 2 );
+
 uniform sampler2D _Imager;
 
 //############################################################################## ■
@@ -56,6 +60,10 @@ in TSenderVG
   ivec3 Pos;
 }
 _Sender[ 1 ];
+
+const int X0 = _Sender[ 0 ].Pos.x;  const int X1 = X0 + 1;
+const int Y0 = _Sender[ 0 ].Pos.y;  const int Y1 = Y0 + 1;
+const int Z0 = _Sender[ 0 ].Pos.z;  const int Z1 = Z0 + 1;
 
 //------------------------------------------------------------------------------
 
@@ -70,55 +78,19 @@ _Result;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【型】
 
+struct TTrias
+{
+  int   TsN;
+  ivec3 Ts[ 5 ];
+};
+
 struct TPoin
 {
   vec4 Pos;
   vec4 Nor;
 };
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【ルーチン】
-
-void AddPoin( TPoin Poin_ )
-{
-  _Result.Pos =                     _ShaperPose     * Poin_.Pos;
-  _Result.Nor = transpose( inverse( _ShaperPose ) ) * Poin_.Nor;
-
-  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
-
-  EmitVertex();
-}
-
-//------------------------------------------------------------------------------
-
-void AddFace( TPoin P1_, TPoin P2_, TPoin P3_ )
-{
-  AddPoin( P1_ );
-  AddPoin( P2_ );
-  AddPoin( P3_ );
-
-  EndPrimitive();
-}
-
-//------------------------------------------------------------------------------
-
-void AddFaceFlat( TPoin P1_, TPoin P2_, TPoin P3_ )
-{
-  vec4 N = FaceNorm( P1_.Pos, P2_.Pos, P3_.Pos );
-
-  P1_.Nor = N;
-  P2_.Nor = N;
-  P3_.Nor = N;
-
-  AddFace( P1_, P2_, P3_ );
-}
-
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-struct TTrias
-{
-  int   TsN;
-  ivec3 Ts[ 5 ];
-};
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【定数】
 
 const TTrias TRIASTABLE[ 256 ] = TTrias[ 256 ](
   TTrias( 0, ivec3[ 5 ]( ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ) ) ),
@@ -379,57 +351,71 @@ const TTrias TRIASTABLE[ 256 ] = TTrias[ 256 ](
   TTrias( 0, ivec3[ 5 ]( ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ), ivec3( -1, -1, -1 ) ) )
 );
 
-const ivec3 _VoxelsN = textureSize( _Voxels, 0 ) - ivec3( 1 );
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【ルーチン】
 
 float GetVoxel( int X, int Y, int Z )
 {
-  return texelFetch( _Voxels, ivec3( X, Y, Z ), 0 ).x;
+  return texelFetch( _Voxels, ivec3( 1 ) + ivec3( X, Y, Z ), 0 ).x;
 }
+
+//------------------------------------------------------------------------------
 
 float GetInterp( float X, float Y, float Z )
 {
-  return texture( _Voxels, vec3( X / _VoxelsN.x,
-                                 Y / _VoxelsN.y,
-                                 Z / _VoxelsN.z ) ).x;
+  return texture( _Voxels, ( vec3( 1 ) + vec3( X, Y, Z ) ) / _ElemBricsN ).x;
 }
+
+//------------------------------------------------------------------------------
 
 vec4 GetGrad( vec3 P )
 {
   vec4 Result;
 
-  Result.x = GetInterp( P.x+1, P.y  , P.z   ) - GetInterp( P.x-1, P.y  , P.z   );
-  Result.y = GetInterp( P.x  , P.y+1, P.z   ) - GetInterp( P.x  , P.y-1, P.z   );
-  Result.z = GetInterp( P.x  , P.y  , P.z+1 ) - GetInterp( P.x  , P.y  , P.z-1 );
+  Result.x = ( GetInterp( P.x+1, P.y  , P.z   ) - GetInterp( P.x-1, P.y  , P.z   ) ) / 2;
+  Result.y = ( GetInterp( P.x  , P.y+1, P.z   ) - GetInterp( P.x  , P.y-1, P.z   ) ) / 2;
+  Result.z = ( GetInterp( P.x  , P.y  , P.z+1 ) - GetInterp( P.x  , P.y  , P.z-1 ) ) / 2;
   Result.w = 0;
 
   return Result;
 }
 
-const int X0 = _Sender[ 0 ].Pos.x;  const int X1 = X0 + 1;
-const int Y0 = _Sender[ 0 ].Pos.y;  const int Y1 = Y0 + 1;
-const int Z0 = _Sender[ 0 ].Pos.z;  const int Z1 = Z0 + 1;
+//------------------------------------------------------------------------------
 
-//          020---------021---------022
-//          /|          /|          /|
-//         / |         / |         / |
-//        /  |        /  |        /  |
-//      120---------121---------122  |
-//      /|   |      /|   |      /|   |
-//     / |  010----/-|--011----/-|--012
-//    /  |  /|    /  |  /|    /  |  /|
-//  220---------221---------222  | / |
-//   |   |/  |   |   |/  |   |   |/  |
-//   |  110------|--111------|--112  |
-//   |  /|   |   |  /|   |   |  /|   |
-//   | / |  000--|-/-|--001--|-/-|--002
-//   |/  |  /    |/  |  /    |/  |  /
-//  210---------211---------212  | /
-//   |   |/      |   |/      |   |/
-//   |  100------|--101------|--102
-//   |  /        |  /        |  /
-//   | /         | /         | /
-//   |/          |/          |/
-//  200---------201---------202
+void AddPoin( TPoin Poin_ )
+{
+  _Result.Pos =                     _ShaperPose     * Poin_.Pos;
+  _Result.Nor = transpose( inverse( _ShaperPose ) ) * Poin_.Nor;
+
+  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
+
+  EmitVertex();
+}
+
+//------------------------------------------------------------------------------
+
+void AddFace( TPoin P1_, TPoin P2_, TPoin P3_ )
+{
+  AddPoin( P1_ );
+  AddPoin( P2_ );
+  AddPoin( P3_ );
+
+  EndPrimitive();
+}
+
+//------------------------------------------------------------------------------
+
+void AddFaceFlat( TPoin P1_, TPoin P2_, TPoin P3_ )
+{
+  vec4 N = FaceNorm( P1_.Pos, P2_.Pos, P3_.Pos );
+
+  P1_.Nor = N;
+  P2_.Nor = N;
+  P3_.Nor = N;
+
+  AddFace( P1_, P2_, P3_ );
+}
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 const float G000 = GetVoxel( X0, Y0, Z0 );
 const float G001 = GetVoxel( X1, Y0, Z0 );
@@ -439,6 +425,8 @@ const float G100 = GetVoxel( X0, Y0, Z1 );
 const float G101 = GetVoxel( X1, Y0, Z1 );
 const float G110 = GetVoxel( X0, Y1, Z1 );
 const float G111 = GetVoxel( X1, Y1, Z1 );
+
+//------------------------------------------------------------------------------
 
 int CubeKind()
 {
@@ -453,6 +441,8 @@ int CubeKind()
   if ( G111 < 0 ) Result += 0x80;  // 10000000
   return Result;
 }
+
+//------------------------------------------------------------------------------
 
 TPoin MakePoin( int I_ )
 {
@@ -517,6 +507,8 @@ TPoin MakePoin( int I_ )
 
   return Result;
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 void main()
 {
