@@ -42,7 +42,7 @@ layout( std140 ) uniform TShaperPose
 
 //------------------------------------------------------------------------------
 
-uniform sampler3D _Voxels;
+uniform sampler3D _Grids;
 
 uniform sampler2D _Imager;
 

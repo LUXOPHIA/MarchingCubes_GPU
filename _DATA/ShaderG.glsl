@@ -43,9 +43,9 @@ layout( std140 ) uniform TShaperPose
 
 //------------------------------------------------------------------------------
 
-uniform sampler3D _Voxels;
+uniform sampler3D _Grids;
 
-const ivec3 _ElemGridsN = textureSize( _Voxels, 0 );
+const ivec3 _ElemGridsN = textureSize( _Grids, 0 );
 const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
 const ivec3 _BricsN     = _ElemBricsN - ivec3( 2 );
 
@@ -353,16 +353,16 @@ const TTrias TRIASTABLE[ 256 ] = TTrias[ 256 ](
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【ルーチン】
 
-float GetVoxel( int X, int Y, int Z )
+float GetGrids( int X, int Y, int Z )
 {
-  return texelFetch( _Voxels, ivec3( 1 ) + ivec3( X, Y, Z ), 0 ).x;
+  return texelFetch( _Grids, ivec3( 1 ) + ivec3( X, Y, Z ), 0 ).x;
 }
 
 //------------------------------------------------------------------------------
 
 float GetInterp( float X, float Y, float Z )
 {
-  return texture( _Voxels, ( vec3( 1 ) + vec3( X, Y, Z ) ) / _ElemBricsN ).x;
+  return texture( _Grids, ( vec3( 1 ) + vec3( X, Y, Z ) ) / _ElemBricsN ).x;
 }
 
 //------------------------------------------------------------------------------
@@ -402,29 +402,16 @@ void AddFace( TPoin P1_, TPoin P2_, TPoin P3_ )
   EndPrimitive();
 }
 
-//------------------------------------------------------------------------------
-
-void AddFaceFlat( TPoin P1_, TPoin P2_, TPoin P3_ )
-{
-  vec4 N = FaceNorm( P1_.Pos, P2_.Pos, P3_.Pos );
-
-  P1_.Nor = N;
-  P2_.Nor = N;
-  P3_.Nor = N;
-
-  AddFace( P1_, P2_, P3_ );
-}
-
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-const float G000 = GetVoxel( X0, Y0, Z0 );
-const float G001 = GetVoxel( X1, Y0, Z0 );
-const float G010 = GetVoxel( X0, Y1, Z0 );
-const float G011 = GetVoxel( X1, Y1, Z0 );
-const float G100 = GetVoxel( X0, Y0, Z1 );
-const float G101 = GetVoxel( X1, Y0, Z1 );
-const float G110 = GetVoxel( X0, Y1, Z1 );
-const float G111 = GetVoxel( X1, Y1, Z1 );
+const float G000 = GetGrids( X0, Y0, Z0 );
+const float G001 = GetGrids( X1, Y0, Z0 );
+const float G010 = GetGrids( X0, Y1, Z0 );
+const float G011 = GetGrids( X1, Y1, Z0 );
+const float G100 = GetGrids( X0, Y0, Z1 );
+const float G101 = GetGrids( X1, Y0, Z1 );
+const float G110 = GetGrids( X0, Y1, Z1 );
+const float G111 = GetGrids( X1, Y1, Z1 );
 
 //------------------------------------------------------------------------------
 

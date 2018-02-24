@@ -2,9 +2,9 @@
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【共通定数】
 
-uniform sampler3D _Voxels;
+uniform sampler3D _Grids;
 
-const ivec3 _ElemGridsN = textureSize( _Voxels, 0 );
+const ivec3 _ElemGridsN = textureSize( _Grids, 0 );
 const ivec3 _ElemBricsN = _ElemGridsN - ivec3( 1 );
 const ivec3 _BricsN     = _ElemBricsN - ivec3( 2 );
 
