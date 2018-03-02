@@ -138,84 +138,104 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SendData; virtual; abstract;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TPixel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TTexel_,_TTexels_>
 
      IGLImager1D = interface( IGLImager )
      ['{9802F2EE-57A9-4E2E-AE7F-CCC6A32DC3FE}']
-       ///// アクセス
-       function GetTexelsX :Integer;
-       procedure SetTexelsX( const TexelsX_:Integer );
-       ///// プロパティ
-       property TexelsX :Integer read GetTexelsX write SetTexelsX;
+     {protected}
+     {public}
+       ///// メソッド
+       procedure SendData;
      end;
 
      //-------------------------------------------------------------------------
 
-     TGLImager1D<_TPixel_:record> = class( TGLImager, IGLImager1D )
+     TGLImager1D<_TTexel_:record;_TTexels_:constructor,TArray1D<_TTexel_>> = class( TGLImager, IGLImager1D )
      private
      protected
-       _Texels :TBricArray1D<_TPixel_>;
-       ///// アクセス
-       function GetTexels( const X_:Integer ) :_TPixel_;
-       procedure SetTexels( const X_:Integer; const Texel_:_TPixel_ );
-       function GetTexelsX :Integer;
-       procedure SetTexelsX( const TexelsX_:Integer );
+       _Texels :_TTexels_;
      public
-       constructor Create; overload;
-       constructor Create( const TexelsX_:Integer ); overload;
+       constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Texels[ const X_:Integer ] :_TPixel_ read GetTexels  write SetTexels ; default;
-       property TexelsX                    :Integer  read GetTexelsX write SetTexelsX;
+       property Texels :_TTexels_ read _Texels;
        ///// メソッド
        procedure SendData; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TPixel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D<_TTexel_>
+
+     TGLBricer1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TBricArray1D<_TTexel_>> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider1D<_TTexel_>
+
+     TGLGrider1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TGridArray1D<_TTexel_>> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TTexel_,_TTexels_>
 
      IGLImager2D = interface( IGLImager )
      ['{FE12BAB0-3DF5-4D47-B97E-7BC1059557F3}']
-       ///// アクセス
-       function GetTexelsX :Integer;
-       procedure SetTexelsX( const TexelsX_:Integer );
-       function GetTexelsY :Integer;
-       procedure SetTexelsY( const TexelsX_:Integer );
-       ///// プロパティ
-       property TexelsX :Integer read GetTexelsX write SetTexelsX;
-       property TexelsY :Integer read GetTexelsY write SetTexelsY;
+     {protected}
+     {public}
+       ///// メソッド
+       procedure SendData;
      end;
 
      //-------------------------------------------------------------------------
 
-     TGLImager2D<_TPixel_:record> = class( TGLImager, IGLImager2D )
+     TGLImager2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager, IGLImager2D )
      private
      protected
-       _Texels :TBricArray2D<_TPixel_>;
-       ///// アクセス
-       function GetTexels( const X_,Y_:Integer ) :_TPixel_;
-       procedure SetTexels( const X_,Y_:Integer; const Texel_:_TPixel_ );
-       function GetTexelsX :Integer;
-       procedure SetTexelsX( const TexelsX_:Integer );
-       function GetTexelsY :Integer;
-       procedure SetTexelsY( const TexelsY_:Integer );
+       _Texels :_TTexels_;
      public
-       constructor Create; overload;
-       constructor Create( const TexelsX_,TexelsY_:Integer ); overload;
+       constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Texels[ const X_,Y_:Integer ] :_TPixel_ read GetTexels  write SetTexels ; default;
-       property TexelsX                       :Integer  read GetTexelsX write SetTexelsX;
-       property TexelsY                       :Integer  read GetTexelsY write SetTexelsY;
+       property Texels :_TTexels_ read _Texels;
        ///// メソッド
        procedure SendData; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TPixel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D<_TTexel_>
+
+     TGLBricer2D<_TTexel_:record> = class( TGLImager2D<_TTexel_,TBricArray2D<_TTexel_>> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider2D<_TTexel_>
+
+     TGLGrider2D<_TTexel_:record> = class( TGLImager2D<_TTexel_,TGridArray2D<_TTexel_>> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TTexel_,_TTexels_>
 
      IGLImager3D = interface( IGLImager )
      ['{9901BFAD-086D-4BC7-A870-56DB2A7A2BD0}']
-       ///// アクセス
-       ///// プロパティ
+     {protected}
+     {public}
+       ///// メソッド
+       procedure SendData;
      end;
 
      //-------------------------------------------------------------------------
@@ -233,7 +253,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SendData; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TPixel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TTexel_>
 
      TGLBricer3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TBricArray3D<_TTexel_>> )
      private
@@ -243,7 +263,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D<_TPixel_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D<_TTexel_>
 
      TGLGrider3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TGridArray3D<_TTexel_>> )
      private
@@ -441,10 +461,7 @@ begin
 
      glGenTextures( 1, @_ID );
 
-     _Kind   := Kind_;
-     _TexelF := GL_RGBA;
-     _PixelF := GL_RGBA;
-     _PixelT := GL_FLOAT;
+     _Kind := Kind_;
 
      Bind;
        glTexParameteri( _Kind, GL_TEXTURE_MAX_LEVEL, 0 );
@@ -476,7 +493,7 @@ end;
 
 procedure TGLImager.Use( const BindI_:GLuint );
 begin
-     //_Field.Use( BindI_ );
+     _Field.Use( BindI_ );
 
      glActiveTexture( GL_TEXTURE0 + BindI_ );
 
@@ -493,54 +510,27 @@ begin
 
      glActiveTexture( GL_TEXTURE0 );
 
-     //_Field.Unuse( BindI_ );
+     _Field.Unuse( BindI_ );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TPixel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TGLImager1D<_TPixel_>.GetTexels( const X_:Integer ) :_TPixel_;
-begin
-     Result := _Texels[ X_ ];
-end;
-
-procedure TGLImager1D<_TPixel_>.SetTexels( const X_:Integer; const Texel_:_TPixel_ );
-begin
-     _Texels[ X_ ] := Texel_;
-end;
-
-//------------------------------------------------------------------------------
-
-function TGLImager1D<_TPixel_>.GetTexelsX :Integer;
-begin
-     Result := _Texels.BricsX;
-end;
-
-procedure TGLImager1D<_TPixel_>.SetTexelsX( const TexelsX_:Integer );
-begin
-     _Texels.BricsX := TexelsX_;
-end;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager1D<_TPixel_>.Create;
-begin
-     Create( 0 );
-end;
-
-constructor TGLImager1D<_TPixel_>.Create( const TexelsX_:Integer );
+constructor TGLImager1D<_TTexel_,_TTexels_>.Create;
 begin
      inherited Create( GL_TEXTURE_1D );
 
-     _Texels := TBricArray1D<_TPixel_>.Create( TexelsX_ );
+     _Texels := _TTexels_.Create;
+
+     _Texels.MargsX := 1;
 end;
 
-destructor TGLImager1D<_TPixel_>.Destroy;
+destructor TGLImager1D<_TTexel_,_TTexels_>.Destroy;
 begin
      _Texels.DisposeOf;
 
@@ -549,71 +539,83 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager1D<_TPixel_>.SendData;
+procedure TGLImager1D<_TTexel_,_TTexels_>.SendData;
 begin
      Bind;
-       glTexImage1D( _Kind, 0, _TexelF, _Texels.BricsX, 0,
+       glTexImage1D( _Kind, 0, _TexelF, _Texels.ElemsX, 0,
                                _PixelF,
                                _PixelT,
-                               _Texels.ItemP[ 0 ] );
+                               _Texels.ElemsP0 );
      Unbind;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TPixel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D<_TTexel_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-/////////////////////////////////////////////////////////////////////// アクセス
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-function TGLImager2D<_TPixel_>.GetTexels( const X_,Y_:Integer ) :_TPixel_;
+constructor TGLBricer1D<_TTexel_>.Create;
 begin
-     Result := _Texels[ X_, Y_ ];
+     inherited;
+
+     with _Field do
+     begin
+          WrapU := GL_MIRRORED_REPEAT;
+     end;
 end;
 
-procedure TGLImager2D<_TPixel_>.SetTexels( const X_,Y_:Integer; const Texel_:_TPixel_ );
+destructor TGLBricer1D<_TTexel_>.Destroy;
 begin
-     _Texels[ X_, Y_ ] := Texel_;
+
+     inherited;
 end;
 
-//------------------------------------------------------------------------------
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider1D<_TTexel_>
 
-function TGLImager2D<_TPixel_>.GetTexelsX :Integer;
-begin
-     Result := _Texels.BricsX;
-end;
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-procedure TGLImager2D<_TPixel_>.SetTexelsX( const TexelsX_:Integer );
-begin
-     _Texels.BricsX := TexelsX_;
-end;
-
-function TGLImager2D<_TPixel_>.GetTexelsY :Integer;
-begin
-     Result := _Texels.BricsY;
-end;
-
-procedure TGLImager2D<_TPixel_>.SetTexelsY( const TexelsY_:Integer );
-begin
-     _Texels.BricsY := TexelsY_;
-end;
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager2D<_TPixel_>.Create;
+constructor TGLGrider1D<_TTexel_>.Create;
 begin
-     Create( 0, 0 );
+     inherited;
+
+     with _Field do
+     begin
+          WrapU := GL_CLAMP_TO_EDGE;
+     end;
 end;
 
-constructor TGLImager2D<_TPixel_>.Create( const TexelsX_,TexelsY_:Integer );
+destructor TGLGrider1D<_TTexel_>.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TTexel_,_TTexels_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLImager2D<_TTexel_,_TTexels_>.Create;
 begin
      inherited Create( GL_TEXTURE_2D );
 
-     _Texels := TBricArray2D<_TPixel_>.Create( TexelsX_, TexelsY_ );
+     _Texels := _TTexels_.Create;
+
+     _Texels.MargsX := 1;
+     _Texels.MargsY := 1;
 end;
 
-destructor TGLImager2D<_TPixel_>.Destroy;
+destructor TGLImager2D<_TTexel_,_TTexels_>.Destroy;
 begin
      _Texels.DisposeOf;
 
@@ -622,18 +624,68 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager2D<_TPixel_>.SendData;
+procedure TGLImager2D<_TTexel_,_TTexels_>.SendData;
 begin
      Bind;
-       glTexImage2D( _Kind, 0, _TexelF, _Texels.BricsX,
-                                        _Texels.BricsY, 0,
+       glTexImage2D( _Kind, 0, _TexelF, _Texels.ElemsX,
+                                        _Texels.ElemsY, 0,
                                _PixelF,
                                _PixelT,
-                               _Texels.ItemP[ 0, 0 ] );
+                               _Texels.ElemsP0 );
      Unbind;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TPixel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D<_TTexel_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLBricer2D<_TTexel_>.Create;
+begin
+     inherited;
+
+     with _Field do
+     begin
+          WrapU := GL_MIRRORED_REPEAT;
+          WrapV := GL_MIRRORED_REPEAT;
+     end;
+end;
+
+destructor TGLBricer2D<_TTexel_>.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider2D<_TTexel_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLGrider2D<_TTexel_>.Create;
+begin
+     inherited;
+
+     with _Field do
+     begin
+          WrapU := GL_CLAMP_TO_EDGE;
+          WrapV := GL_CLAMP_TO_EDGE;
+     end;
+end;
+
+destructor TGLGrider2D<_TTexel_>.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -644,10 +696,6 @@ end;
 constructor TGLImager3D<_TTexel_,_TTexels_>.Create;
 begin
      inherited Create( GL_TEXTURE_3D );
-
-     _TexelF := GL_R32F;
-     _PixelF := GL_RED;
-     _PixelT := GL_FLOAT;
 
      _Texels := _TTexels_.Create;
 
@@ -677,7 +725,7 @@ begin
      Unbind;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TPixel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TTexel_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -703,7 +751,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D<_TPixel_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D<_TTexel_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
