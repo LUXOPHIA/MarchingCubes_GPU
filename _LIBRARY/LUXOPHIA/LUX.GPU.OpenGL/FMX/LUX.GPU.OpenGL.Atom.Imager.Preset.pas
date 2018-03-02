@@ -18,6 +18,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
      public
+       constructor Create;
+       destructor Destroy; override;
+       ///// メソッド
        procedure ImportFrom( const BMP_:TBitmap );
        procedure ExportTo( const BMP_:TBitmap );
        procedure LoadFromFile( const FileName_:String );
@@ -30,18 +33,53 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
      public
+       constructor Create;
+       destructor Destroy; override;
+       ///// メソッド
        procedure ImportFrom( const BMP_:TBitmap );
        procedure ExportTo( const BMP_:TBitmap );
        procedure LoadFromFile( const FileName_:String );
        procedure SaveToFile( const FileName_:String );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D_RGBA
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_AlphaColorF
 
-     TGLImager3D_RGBA = class( TGLImager3D<TAlphaColorF> )
+     TGLBricer3D_AlphaColorF = class( TGLBricer3D<TAlphaColorF> )
      private
      protected
      public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_AlphaColorF
+
+     TGLGrider3D_AlphaColorF = class( TGLGrider3D<TAlphaColorF> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_AlphaColorF
+
+     TGLBricer3D_Single = class( TGLBricer3D<Single> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_AlphaColorF
+
+     TGLGrider3D_Single = class( TGLGrider3D<Single> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -51,6 +89,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
+
+uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -63,6 +103,23 @@ implementation //###############################################################
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLImager1D_RGBA.Create;
+begin
+     inherited;
+
+     _TexelF := GL_RGBA;
+     _PixelF := GL_RGBA;
+     _PixelT := GL_FLOAT;
+end;
+
+destructor TGLImager1D_RGBA.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TGLImager1D_RGBA.ImportFrom( const BMP_:TBitmap );
 var
@@ -136,6 +193,23 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
+constructor TGLImager2D_RGBA.Create;
+begin
+     inherited;
+
+     _TexelF := GL_RGBA;
+     _PixelF := GL_RGBA;
+     _PixelT := GL_FLOAT;
+end;
+
+destructor TGLImager2D_RGBA.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
 procedure TGLImager2D_RGBA.ImportFrom( const BMP_:TBitmap );
 var
    B :TBitmapData;
@@ -207,13 +281,97 @@ begin
      B.DisposeOf;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D_RGBA
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_RGBA
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLBricer3D_AlphaColorF.Create;
+begin
+     inherited;
+
+     _TexelF := GL_RGBA;
+     _PixelF := GL_RGBA;
+     _PixelT := GL_FLOAT;
+end;
+
+destructor TGLBricer3D_AlphaColorF.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_RGBA
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLGrider3D_AlphaColorF.Create;
+begin
+     inherited;
+
+     _TexelF := GL_RGBA;
+     _PixelF := GL_RGBA;
+     _PixelT := GL_FLOAT;
+end;
+
+destructor TGLGrider3D_AlphaColorF.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_RGBA
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLBricer3D_Single.Create;
+begin
+     inherited;
+
+     _TexelF := GL_R32F;
+     _PixelF := GL_RED;
+     _PixelT := GL_FLOAT;
+end;
+
+destructor TGLBricer3D_Single.Destroy;
+begin
+
+     inherited;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_Single
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLGrider3D_Single.Create;
+begin
+     inherited;
+
+     _TexelF := GL_R32F;
+     _PixelF := GL_RED;
+     _PixelT := GL_FLOAT;
+end;
+
+destructor TGLGrider3D_Single.Destroy;
+begin
+
+     inherited;
+end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
