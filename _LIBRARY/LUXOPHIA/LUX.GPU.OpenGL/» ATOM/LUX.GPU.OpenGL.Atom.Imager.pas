@@ -39,7 +39,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLSample = class( TGLAtomer, IGLSample )
+     TGLSamper = class( TGLAtomer, IGLSample )
      private
      protected
        _WrapU     :GLint;
@@ -106,7 +106,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLImager = class( TGLAtomer, IGLImager )
      private
      protected
-       _Field  :TGLSample;
+       _Field  :TGLSamper;
        _Kind   :GLenum;
        _TexelF :GLenum;
        _PixelF :GLenum;
@@ -124,7 +124,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Kind_:GLenum );
        destructor Destroy; override;
        ///// プロパティ
-       property Field  :TGLSample read   _Field                 ;
+       property Field  :TGLSamper read   _Field                 ;
        property Kind   :GLenum    read GetKind   write SetKind  ;
        property TexelF :GLenum    read GetTexelF write SetTexelF;
        property PixelF :GLenum    read GetPixelF write SetPixelF;
@@ -157,36 +157,36 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLSample.GetWrapU :GLint;
+function TGLSamper.GetWrapU :GLint;
 begin
      Result := _WrapU;
 end;
 
-procedure TGLSample.SetWrapU( const WrapU_:GLint );
+procedure TGLSamper.SetWrapU( const WrapU_:GLint );
 begin
      _WrapU := WrapU_;
 
      SetParamI( GL_TEXTURE_WRAP_S, _WrapU );
 end;
 
-function TGLSample.GetWrapV :GLint;
+function TGLSamper.GetWrapV :GLint;
 begin
      Result := _WrapV;
 end;
 
-procedure TGLSample.SetWrapV( const WrapV_:GLint );
+procedure TGLSamper.SetWrapV( const WrapV_:GLint );
 begin
      _WrapV := WrapV_;
 
      SetParamI( GL_TEXTURE_WRAP_T, _WrapV );
 end;
 
-function TGLSample.GetWrapW :GLint;
+function TGLSamper.GetWrapW :GLint;
 begin
      Result := _WrapW;
 end;
 
-procedure TGLSample.SetWrapW( const WrapW_:GLint );
+procedure TGLSamper.SetWrapW( const WrapW_:GLint );
 begin
      _WrapW := WrapW_;
 
@@ -195,24 +195,24 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TGLSample.GetMinFilter :GLint;
+function TGLSamper.GetMinFilter :GLint;
 begin
      Result := _MinFilter;
 end;
 
-procedure TGLSample.SetMinFilter( const MinFilter_:GLint );
+procedure TGLSamper.SetMinFilter( const MinFilter_:GLint );
 begin
      _MinFilter := MinFilter_;
 
      SetParamI( GL_TEXTURE_MIN_FILTER, _MinFilter );
 end;
 
-function TGLSample.GetMagFilter :GLint;
+function TGLSamper.GetMagFilter :GLint;
 begin
      Result := _MagFilter;
 end;
 
-procedure TGLSample.SetMagFilter( const MagFilter_:GLint );
+procedure TGLSamper.SetMagFilter( const MagFilter_:GLint );
 begin
      _MagFilter := MagFilter_;
 
@@ -221,19 +221,19 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLSample.SetParamI( const Name_:GLenum; const Value_:GLint );
+procedure TGLSamper.SetParamI( const Name_:GLenum; const Value_:GLint );
 begin
      glSamplerParameteri( _ID, Name_, Value_ );
 end;
 
-procedure TGLSample.SetParamF( const Name_:GLenum; const Value_:GLfloat );
+procedure TGLSamper.SetParamF( const Name_:GLenum; const Value_:GLfloat );
 begin
      glSamplerParameterf( _ID, Name_, Value_ );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLSample.Create;
+constructor TGLSamper.Create;
 begin
      inherited;
 
@@ -243,7 +243,7 @@ begin
      MagFilter := GL_LINEAR;
 end;
 
-destructor TGLSample.Destroy;
+destructor TGLSamper.Destroy;
 begin
      glDeleteSamplers( 1, @_ID );
 
@@ -252,12 +252,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLSample.Use( const BindI_:GLuint );
+procedure TGLSamper.Use( const BindI_:GLuint );
 begin
      glBindSampler( BindI_, _ID );
 end;
 
-procedure TGLSample.Unuse( const BindI_:GLuint );
+procedure TGLSamper.Unuse( const BindI_:GLuint );
 begin
      glBindSampler( BindI_, 0 );
 end;
@@ -316,7 +316,7 @@ constructor TGLImager.Create( const Kind_:GLenum );
 begin
      inherited Create;
 
-     _Field := TGLSample.Create;
+     _Field := TGLSamper.Create;
 
      glGenTextures( 1, @_ID );
 
