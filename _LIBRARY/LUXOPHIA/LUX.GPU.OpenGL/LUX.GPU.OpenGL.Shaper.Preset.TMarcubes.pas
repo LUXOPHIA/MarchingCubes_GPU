@@ -5,10 +5,9 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D2, LUX.D3, LUX.M4,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Atom.Imager.Preset,
+     LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
+     LUX.GPU.OpenGL.Atom.Imager.D3.Preset,
      LUX.GPU.OpenGL.Matery,
-     LUX.GPU.OpenGL.Matery.Preset,
      LUX.GPU.OpenGL.Shaper;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
