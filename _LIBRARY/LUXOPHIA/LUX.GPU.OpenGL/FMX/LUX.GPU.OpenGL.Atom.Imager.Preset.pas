@@ -12,9 +12,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D_RGBA
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D_TAlphaColorF
 
-     TGLImager1D_RGBA = class( TGLImager1D<TAlphaColorF> )
+     TGLBricer1D_TAlphaColorF = class( TGLBricer1D<TAlphaColorF> )
      private
      protected
      public
@@ -27,9 +27,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SaveToFile( const FileName_:String );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D_RGBA
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D_TAlphaColorF
 
-     TGLImager2D_RGBA = class( TGLImager2D<TAlphaColorF> )
+     TGLBricer2D_TAlphaColorF = class( TGLBricer2D<TAlphaColorF> )
      private
      protected
      public
@@ -62,7 +62,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_AlphaColorF
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_Single
 
      TGLBricer3D_Single = class( TGLBricer3D<Single> )
      private
@@ -72,7 +72,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_AlphaColorF
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_Single
 
      TGLGrider3D_Single = class( TGLGrider3D<Single> )
      private
@@ -96,7 +96,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D_RGBA
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D_TAlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -104,7 +104,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager1D_RGBA.Create;
+constructor TGLBricer1D_TAlphaColorF.Create;
 begin
      inherited;
 
@@ -113,7 +113,7 @@ begin
      _PixelT := GL_FLOAT;
 end;
 
-destructor TGLImager1D_RGBA.Destroy;
+destructor TGLBricer1D_TAlphaColorF.Destroy;
 begin
 
      inherited;
@@ -121,16 +121,16 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager1D_RGBA.ImportFrom( const BMP_:TBitmap );
+procedure TGLBricer1D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
 var
    B :TBitmapData;
    X :Integer;
 begin
-     TexelsX := BMP_.Width;
+     _Texels.BricsX := BMP_.Width;
 
      BMP_.Map( TMapAccess.Read, B );
 
-     for X := 0 to TexelsX-1 do
+     for X := 0 to _Texels.BricsX-1 do
      begin
           Texels[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
      end;
@@ -140,16 +140,16 @@ begin
      SendData;
 end;
 
-procedure TGLImager1D_RGBA.ExportTo( const BMP_:TBitmap );
+procedure TGLBricer1D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
 var
    B :TBitmapData;
    X :Integer;
 begin
-     BMP_.SetSize( TexelsX, 1 );
+     BMP_.SetSize( _Texels.BricsX, 1 );
 
      BMP_.Map( TMapAccess.Write, B );
 
-     for X := 0 to TexelsX-1 do
+     for X := 0 to _Texels.BricsX-1 do
      begin
           B.SetPixel( X, 0, Texels[ X ].ToAlphaColor );
      end;
@@ -159,7 +159,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager1D_RGBA.LoadFromFile( const FileName_:String );
+procedure TGLBricer1D_TAlphaColorF.LoadFromFile( const FileName_:String );
 var
    B :TBitmap;
 begin
@@ -172,7 +172,7 @@ begin
      B.DisposeOf;
 end;
 
-procedure TGLImager1D_RGBA.SaveToFile( const FileName_:String );
+procedure TGLBricer1D_TAlphaColorF.SaveToFile( const FileName_:String );
 var
    B :TBitmap;
 begin
@@ -185,7 +185,7 @@ begin
      B.DisposeOf;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D_RGBA
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D_TAlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -193,7 +193,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager2D_RGBA.Create;
+constructor TGLBricer2D_TAlphaColorF.Create;
 begin
      inherited;
 
@@ -202,7 +202,7 @@ begin
      _PixelT := GL_FLOAT;
 end;
 
-destructor TGLImager2D_RGBA.Destroy;
+destructor TGLBricer2D_TAlphaColorF.Destroy;
 begin
 
      inherited;
@@ -210,19 +210,19 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager2D_RGBA.ImportFrom( const BMP_:TBitmap );
+procedure TGLBricer2D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
 var
    B :TBitmapData;
    X, Y :Integer;
 begin
-     TexelsX := BMP_.Width ;
-     TexelsY := BMP_.Height;
+     _Texels.BricsX := BMP_.Width ;
+     _Texels.BricsY := BMP_.Height;
 
      BMP_.Map( TMapAccess.Read, B );
 
-     for Y := 0 to TexelsY-1 do
+     for Y := 0 to _Texels.BricsY-1 do
      begin
-          for X := 0 to TexelsX-1 do
+          for X := 0 to _Texels.BricsX-1 do
           begin
                Texels[ X, Y ] := TAlphaColorF.Create( B.GetPixel( X, Y ) );
           end;
@@ -233,18 +233,18 @@ begin
      SendData;
 end;
 
-procedure TGLImager2D_RGBA.ExportTo( const BMP_:TBitmap );
+procedure TGLBricer2D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
 var
    B :TBitmapData;
    X, Y :Integer;
 begin
-     BMP_.SetSize( TexelsX, TexelsY );
+     BMP_.SetSize( _Texels.BricsX, _Texels.BricsY );
 
      BMP_.Map( TMapAccess.Write, B );
 
-     for Y := 0 to TexelsY-1 do
+     for Y := 0 to _Texels.BricsY-1 do
      begin
-          for X := 0 to TexelsX-1 do
+          for X := 0 to _Texels.BricsX-1 do
           begin
                B.SetPixel( X, Y, Texels[ X, Y ].ToAlphaColor );
           end;
@@ -255,7 +255,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager2D_RGBA.LoadFromFile( const FileName_:String );
+procedure TGLBricer2D_TAlphaColorF.LoadFromFile( const FileName_:String );
 var
    B :TBitmap;
 begin
@@ -268,7 +268,7 @@ begin
      B.DisposeOf;
 end;
 
-procedure TGLImager2D_RGBA.SaveToFile( const FileName_:String );
+procedure TGLBricer2D_TAlphaColorF.SaveToFile( const FileName_:String );
 var
    B :TBitmap;
 begin
@@ -281,7 +281,7 @@ begin
      B.DisposeOf;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_RGBA
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_AlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -304,7 +304,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_RGBA
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D_AlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -327,7 +327,7 @@ begin
      inherited;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_RGBA
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D_Single
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
