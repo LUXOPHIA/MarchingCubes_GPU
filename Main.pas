@@ -10,16 +10,13 @@ uses
   LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.Viewer,
-  LUX.GPU.OpenGL.Atom.Shader,
   LUX.GPU.OpenGL.Scener,
   LUX.GPU.OpenGL.Camera,
-  LUX.GPU.OpenGL.Shaper,
-  LUX.GPU.OpenGL.Matery,
-  LUX.GPU.OpenGL.Matery.Imager.Preset;
+  LUX.GPU.OpenGL.Shaper.Preset.TMarcubes;
 
 type
   TForm1 = class(TForm)
-          GLViewer1: TGLViewer;
+    GLViewer1: TGLViewer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GLViewer1DblClick(Sender: TObject);
@@ -35,12 +32,11 @@ type
     { public 宣言 }
     _Scener  :TGLScener;
     _Camera1 :TGLCameraPers;
-    _Matery  :TGLMateryImagG;
-    _Shaper  :TGLShaperPrimPoin;
+    _Shaper  :TMarcubes;
     ///// メソッド
     procedure MakeCamera;
-    procedure MakeMatery;
     procedure MakeShaper;
+    procedure MakeMatery;
     procedure MakeVoxels( const Angle_:Single );
   end;
 
@@ -76,54 +72,16 @@ end;
 
 //------------------------------------------------------------------------------
 
-function Pãodering( const P_:TPoint3D ) :Single;
-var
-   X2, Y2, Z2, A :Single;
+procedure TForm1.MakeShaper;
 begin
-     X2 := Sqr( P_.X );
-     Y2 := Sqr( P_.Y );
-     Z2 := Sqr( P_.Z );
-
-     A := Abs( Sqr( ( X2 - Y2 ) / ( X2 + Y2 ) ) - 0.5 );
-
-     Result := Sqr( Sqrt( X2 + Y2 ) - 8 - A ) + Z2 - Sqr( 2 + 3 * A );
+     _Shaper := TMarcubes.Create( _Scener );
 end;
 
-procedure TForm1.MakeVoxels( const Angle_:Single );
-var
-   X, Y, Z :Integer;
-   P, P2 :TPoint3D;
-begin
-     with _Matery do
-     begin
-          for Z := 0 to _Voxels.TexelsZ-1 do
-          begin
-               P.Z := 24 * ( Z / (_Voxels.TexelsZ-1) - 0.5 );
-
-               for Y := 0 to _Voxels.TexelsY-1 do
-               begin
-                    P.Y := 24 * ( Y / (_Voxels.TexelsY-1) - 0.5 );
-
-                    for X := 0 to _Voxels.TexelsX-1 do
-                    begin
-                         P.X := 24 * ( X / (_Voxels.TexelsX-1) - 0.5 );
-
-                         P2 := P * TMatrix3D.CreateRotationX( DegToRad( Angle_ ) );
-
-                         _Voxels[ X, Y, Z ] := Pãodering( P2 );
-                    end;
-               end;
-          end;
-
-          _Voxels.SendData;
-     end;
-end;
+//------------------------------------------------------------------------------
 
 procedure TForm1.MakeMatery;
 begin
-     _Matery := TGLMateryImagG.Create;
-
-     with _Matery do
+     with _Shaper.Matery as TMarcubesMatery do
      begin
           with ShaderV do
           begin
@@ -167,14 +125,47 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.MakeShaper;
+function Pãodering( const P_:TPoint3D ) :Single;
+var
+   X2, Y2, Z2, A :Single;
 begin
-     _Shaper := TGLShaperPrimPoin.Create( _Scener );
+     X2 := Sqr( P_.X );
+     Y2 := Sqr( P_.Y );
+     Z2 := Sqr( P_.Z );
 
-     with _Shaper do
+     A := Abs( Sqr( ( X2 - Y2 ) / ( X2 + Y2 ) ) - 0.5 );
+
+     Result := Sqr( Sqrt( X2 + Y2 ) - 8 - A ) + Z2 - Sqr( 2 + 3 * A );
+end;
+
+procedure TForm1.MakeVoxels( const Angle_:Single );
+var
+   X, Y, Z :Integer;
+   P, P2 :TPoint3D;
+begin
+     with _Shaper.Grider do
      begin
-          Matery := _Matery;
+          for Z := -1 to Texels.GridsZ do
+          begin
+               P.Z := 24 * ( Z / Texels.BricsZ - 0.5 );
+
+               for Y := -1 to Texels.GridsY do
+               begin
+                    P.Y := 24 * ( Y / Texels.BricsY - 0.5 );
+
+                    for X := -1 to Texels.GridsX do
+                    begin
+                         P.X := 24 * ( X / Texels.BricsX - 0.5 );
+
+                         P2 := P * TMatrix3D.CreateRotationX( DegToRad( Angle_ ) );
+
+                         Texels[ X, Y, Z ] := Pãodering( P2 );
+                    end;
+               end;
+          end;
      end;
+
+     _Shaper.MakeModel;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -184,8 +175,8 @@ begin
      _Scener := TGLScener.Create;
 
      MakeCamera;
-     MakeMatery;
      MakeShaper;
+     MakeMatery;
 
      MakeVoxels( 0 );
 end;
