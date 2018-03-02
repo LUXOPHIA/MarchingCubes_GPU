@@ -143,23 +143,23 @@ var
    X, Y, Z :Integer;
    P, P2 :TPoint3D;
 begin
-     with _Shaper.Grider do
+     with _Shaper.Grider.Texels do
      begin
-          for Z := -1 to Texels.GridsZ do
+          for Z := -1 to GridsZ do
           begin
-               P.Z := 24 * ( Z / Texels.BricsZ - 0.5 );
+               P.Z := 24 * ( Z / BricsZ - 0.5 );
 
-               for Y := -1 to Texels.GridsY do
+               for Y := -1 to GridsY do
                begin
-                    P.Y := 24 * ( Y / Texels.BricsY - 0.5 );
+                    P.Y := 24 * ( Y / BricsY - 0.5 );
 
-                    for X := -1 to Texels.GridsX do
+                    for X := -1 to GridsX do
                     begin
-                         P.X := 24 * ( X / Texels.BricsX - 0.5 );
+                         P.X := 24 * ( X / BricsX - 0.5 );
 
                          P2 := P * TMatrix3D.CreateRotationX( DegToRad( Angle_ ) );
 
-                         Texels[ X, Y, Z ] := Pãodering( P2 );
+                         Grids[ X, Y, Z ] := Pãodering( P2 );
                     end;
                end;
           end;
