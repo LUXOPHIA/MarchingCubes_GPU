@@ -1,5 +1,7 @@
 ﻿program MarchingCubes_GPU;
 
+{$R *.dres}
+
 uses
   System.StartUpCopy,
   FMX.Forms,
