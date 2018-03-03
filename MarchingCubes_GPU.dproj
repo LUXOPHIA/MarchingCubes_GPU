@@ -363,26 +363,26 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T3.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Octree.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Tree.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» ATOM\LUX.GPU.OpenGL.Atom.Imager.D2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» ATOM\LUX.GPU.OpenGL.Atom.Imager.D3.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» ATOM\LUX.GPU.OpenGL.Atom.Imager.D1.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Atom.Imager.D1.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Atom.Imager.D2.Preset.pas"/>
-        <RcItem Include="_DATA\ShaderF.glsl">
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.pas"/>
+        <RcItem Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.ShaderF.glsl">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>
-            <ResourceId>ShaderF_glsl</ResourceId>
+            <ResourceId>LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_ShaderF_glsl</ResourceId>
         </RcItem>
-        <RcItem Include="_DATA\ShaderG.glsl">
+        <RcItem Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.ShaderG.glsl">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>
-            <ResourceId>ShaderG_glsl</ResourceId>
+            <ResourceId>LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_ShaderG_glsl</ResourceId>
         </RcItem>
-        <RcItem Include="_DATA\ShaderV.glsl">
+        <RcItem Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.ShaderV.glsl">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>
-            <ResourceId>ShaderV_glsl</ResourceId>
+            <ResourceId>LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_ShaderV_glsl</ResourceId>
         </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -412,25 +412,21 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="_DATA\ShaderV.glsl" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
-                    <Platform Name="OSX32">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\MarchingCubes_GPU.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>MarchingCubes_GPU.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule">
-                    <Platform Name="iOSSimulator">
+                <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.ShaderV.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.ShaderG.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -439,14 +435,24 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="_DATA\ShaderG.glsl" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
+                    <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
+                    <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.ShaderF.glsl" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
-                    <Platform Name="OSX32">
+                <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule">
+                    <Platform Name="iOSSimulator">
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -459,12 +465,6 @@
                 <DeployFile LocalName="Win64\Debug\MarchingCubes_GPU.rsm" Configuration="Debug" Class="DebugSymbols">
                     <Platform Name="Win64">
                         <RemoteName>MarchingCubes_GPU.rsm</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="_DATA\ShaderF.glsl" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win64">
-                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

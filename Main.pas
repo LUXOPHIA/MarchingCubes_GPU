@@ -30,13 +30,11 @@ type
     _MouseP :TSingle2D;
   public
     { public 宣言 }
-    _Scener  :TGLScener;
-    _Camera1 :TGLCameraPers;
-    _Shaper  :TMarcubes;
+    _Scener :TGLScener;
+    _Camera :TGLCameraPers;
+    _Shaper :TMarcubes;
     ///// メソッド
     procedure MakeCamera;
-    procedure MakeShaper;
-    procedure MakeMatery;
     procedure MakeVoxels( const Angle_:Single );
   end;
 
@@ -57,9 +55,9 @@ uses System.Math;
 
 procedure TForm1.MakeCamera;
 begin
-     _Camera1 := TGLCameraPers.Create( _Scener );
+     _Camera := TGLCameraPers.Create( _Scener );
 
-     with _Camera1 do
+     with _Camera do
      begin
           Angl := DegToRad( 60{°} );
 
@@ -67,28 +65,7 @@ begin
                 * TSingleM4.Translate( 0, 0, +3 );
      end;
 
-     GLViewer1.Camera := _Camera1;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.MakeShaper;
-begin
-     _Shaper := TMarcubes.Create( _Scener );
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.MakeMatery;
-begin
-     with _Shaper.Matery as TMarcubesMatery do
-     begin
-          ShaderV.LoadFromResource( 'ShaderV_glsl' );
-          ShaderG.LoadFromResource( 'ShaderG_glsl' );
-          ShaderF.LoadFromResource( 'ShaderF_glsl' );
-
-          Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
-     end;
+     GLViewer1.Camera := _Camera;
 end;
 
 //------------------------------------------------------------------------------
@@ -111,29 +88,32 @@ var
    X, Y, Z :Integer;
    P, P2 :TPoint3D;
 begin
-     with _Shaper.Grider.Texels do
+     with _Shaper do
      begin
-          for Z := -1 to GridsZ do
+          with Grider.Texels do
           begin
-               P.Z := 24 * ( Z / BricsZ - 0.5 );
-
-               for Y := -1 to GridsY do
+               for Z := -1 to GridsZ do
                begin
-                    P.Y := 24 * ( Y / BricsY - 0.5 );
+                    P.Z := 24 * ( Z / BricsZ - 0.5 );
 
-                    for X := -1 to GridsX do
+                    for Y := -1 to GridsY do
                     begin
-                         P.X := 24 * ( X / BricsX - 0.5 );
+                         P.Y := 24 * ( Y / BricsY - 0.5 );
 
-                         P2 := P * TMatrix3D.CreateRotationX( DegToRad( Angle_ ) );
+                         for X := -1 to GridsX do
+                         begin
+                              P.X := 24 * ( X / BricsX - 0.5 );
 
-                         Grids[ X, Y, Z ] := Pãodering( P2 );
+                              P2 := P * TMatrix3D.CreateRotationX( DegToRad( Angle_ ) );
+
+                              Grids[ X, Y, Z ] := Pãodering( P2 );
+                         end;
                     end;
                end;
           end;
-     end;
 
-     _Shaper.MakeModel;
+          MakeModel;
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -143,8 +123,13 @@ begin
      _Scener := TGLScener.Create;
 
      MakeCamera;
-     MakeShaper;
-     MakeMatery;
+
+     _Shaper := TMarcubes.Create( _Scener );
+
+     with _Shaper.Matery as TMarcubesMatery do
+     begin
+          Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
+     end;
 
      MakeVoxels( 0 );
 end;
