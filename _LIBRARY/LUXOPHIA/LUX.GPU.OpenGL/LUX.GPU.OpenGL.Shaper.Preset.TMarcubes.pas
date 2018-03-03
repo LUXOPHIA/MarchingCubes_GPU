@@ -23,13 +23,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMarcubesMatery = class( TGLMateryNorTexG )
      private
      protected
-       _Voxels :TGLGrider3D_Single;
        _Imager :TGLBricer2D_TAlphaColorF;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Voxels :TGLGrider3D_Single       read _Voxels;
        property Imager :TGLBricer2D_TAlphaColorF read _Imager;
        ///// メソッド
        procedure Use; override;
@@ -41,11 +39,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMarcubes = class( TGLShaperZeroPoins )
      private
      protected
+       _Grider :TGLGrider3D_Single;
        _SizeX  :Single;
        _SizeY  :Single;
        _SizeZ  :Single;
        ///// アクセス
-       function GetGrider :TGLGrider3D_Single;
        function GetSizeX :Single;
        procedure SetSizeX( const SizeX_:Single );
        function GetSizeY :Single;
@@ -56,11 +54,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Grider :TGLGrider3D_Single read GetGrider               ;
+       property Grider :TGLGrider3D_Single read   _Grider               ;
        property SizeX  :Single             read GetSizeX  write SetSizeX;
        property SizeY  :Single             read GetSizeY  write SetSizeY;
        property SizeZ  :Single             read GetSizeZ  write SetSizeZ;
        ///// メソッド
+       procedure BeginDraw; override;
+       procedure EndDraw; override;
        procedure MakeModel;
      end;
 
@@ -99,20 +99,11 @@ begin
           end;
      end;
 
-     _Voxels := TGLGrider3D_Single.Create;
      _Imager := TGLBricer2D_TAlphaColorF  .Create;
-
-     with _Voxels.Texels do
-     begin
-          BricsX := 100;
-          BricsY := 100;
-          BricsZ := 100;
-     end;
 end;
 
 destructor TMarcubesMatery.Destroy;
 begin
-     _Voxels.DisposeOf;
      _Imager.DisposeOf;
 
      inherited;
@@ -124,13 +115,11 @@ procedure TMarcubesMatery.Use;
 begin
      inherited;
 
-     _Voxels.Use( 0 );
      _Imager.Use( 1 );
 end;
 
 procedure TMarcubesMatery.Unuse;
 begin
-     _Voxels.Unuse( 0 );
      _Imager.Unuse( 1 );
 
      inherited;
@@ -143,13 +132,6 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 /////////////////////////////////////////////////////////////////////// アクセス
-
-function TMarcubes.GetGrider :TGLGrider3D_Single;
-begin
-     Result := ( _Matery as TMarcubesMatery ).Voxels;
-end;
-
-//------------------------------------------------------------------------------
 
 function TMarcubes.GetSizeX :Single;
 begin
@@ -187,6 +169,8 @@ constructor TMarcubes.Create;
 begin
      inherited;
 
+     _Grider := TGLGrider3D_Single.Create;
+
      _Matery := TMarcubesMatery.Create;
 
      SizeX  := 10;
@@ -203,15 +187,30 @@ end;
 
 destructor TMarcubes.Destroy;
 begin
+     _Grider.DisposeOf;
 
      inherited;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
+procedure TMarcubes.BeginDraw;
+begin
+     inherited;
+
+     _Grider.Use( 0 );
+end;
+
+procedure TMarcubes.EndDraw;
+begin
+     _Grider.Unuse( 0 );
+
+     inherited;
+end;
+
 procedure TMarcubes.MakeModel;
 begin
-     with ( _Matery as TMarcubesMatery )._Voxels do
+     with _Grider do
      begin
           SendData;
 
