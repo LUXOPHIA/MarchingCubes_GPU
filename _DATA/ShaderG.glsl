@@ -1,24 +1,5 @@
 ﻿#version 430
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【ルーチン】
-
-vec4 CrossProduct( vec4 A_, vec4 B_ )
-{
-  vec4 Result;
-
-  Result.x = A_.y * B_.z - A_.z * B_.y;
-  Result.y = A_.z * B_.x - A_.x * B_.z;
-  Result.z = A_.x * B_.y - A_.y * B_.x;
-  Result.w = 0;
-
-  return Result;
-}
-
-vec4 FaceNorm( vec4 P1_, vec4 P2_, vec4 P3_ )
-{
-  return CrossProduct( P2_ - P1_, P3_ - P1_ );
-}
-
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【共通定数】
 
 layout( std140 ) uniform TViewerScal
@@ -39,6 +20,11 @@ layout( std140 ) uniform TCameraPose
 layout( std140 ) uniform TShaperPose
 {
   layout( row_major ) mat4 _ShaperPose;
+};
+
+layout( std140 ) uniform TBricS
+{
+  vec3 _BricS;
 };
 
 //------------------------------------------------------------------------------
@@ -367,14 +353,13 @@ float GetInterp( float X, float Y, float Z )
 
 //------------------------------------------------------------------------------
 
-vec4 GetGrad( vec3 P )
+vec3 GetGrad( vec3 P )
 {
-  vec4 Result;
+  vec3 Result;
 
   Result.x = ( GetInterp( P.x+1, P.y  , P.z   ) - GetInterp( P.x-1, P.y  , P.z   ) ) / 2;
   Result.y = ( GetInterp( P.x  , P.y+1, P.z   ) - GetInterp( P.x  , P.y-1, P.z   ) ) / 2;
   Result.z = ( GetInterp( P.x  , P.y  , P.z+1 ) - GetInterp( P.x  , P.y  , P.z-1 ) ) / 2;
-  Result.w = 0;
 
   return Result;
 }
@@ -435,62 +420,41 @@ TPoin MakePoin( int I_ )
 {
   TPoin Result;
 
+  vec3 P;
+
   float T;
   switch ( I_ )
   {
     case  0:
-      T = G000 / ( G000 - G001 );
-      Result.Pos = vec4( X0+T, Y0, Z0, 1 );
-      break;
+      T = G000 / ( G000 - G001 );  P = vec3( X0+T, Y0, Z0 );  break;
     case  1:
-      T = G010 / ( G010 - G011 );
-      Result.Pos = vec4( X0+T, Y1, Z0, 1 );
-      break;
+      T = G010 / ( G010 - G011 );  P = vec3( X0+T, Y1, Z0 );  break;
     case  2:
-      T = G100 / ( G100 - G101 );
-      Result.Pos = vec4( X0+T, Y0, Z1, 1 );
-      break;
+      T = G100 / ( G100 - G101 );  P = vec3( X0+T, Y0, Z1 );  break;
     case  3:
-      T = G110 / ( G110 - G111 );
-      Result.Pos = vec4( X0+T, Y1, Z1, 1 );
-      break;
+      T = G110 / ( G110 - G111 );  P = vec3( X0+T, Y1, Z1 );  break;
     case  4:
-      T = G000 / ( G000 - G010 );
-      Result.Pos = vec4( X0, Y0+T, Z0, 1 );
-      break;
+      T = G000 / ( G000 - G010 );  P = vec3( X0, Y0+T, Z0 );  break;
     case  5:
-      T = G100 / ( G100 - G110 );
-      Result.Pos = vec4( X0, Y0+T, Z1, 1 );
-      break;
+      T = G100 / ( G100 - G110 );  P = vec3( X0, Y0+T, Z1 );  break;
     case  6:
-      T = G001 / ( G001 - G011 );
-      Result.Pos = vec4( X1, Y0+T, Z0, 1 );
-      break;
+      T = G001 / ( G001 - G011 );  P = vec3( X1, Y0+T, Z0 );  break;
     case  7:
-      T = G101 / ( G101 - G111 );
-      Result.Pos = vec4( X1, Y0+T, Z1, 1 );
-      break;
+      T = G101 / ( G101 - G111 );  P = vec3( X1, Y0+T, Z1 );  break;
     case  8:
-      T = G000 / ( G000 - G100 );
-      Result.Pos = vec4( X0, Y0, Z0+T, 1 );
-      break;
+      T = G000 / ( G000 - G100 );  P = vec3( X0, Y0, Z0+T );  break;
     case  9:
-      T = G001 / ( G001 - G101 );
-      Result.Pos = vec4( X1, Y0, Z0+T, 1 );
-      break;
+      T = G001 / ( G001 - G101 );  P = vec3( X1, Y0, Z0+T );  break;
     case 10:
-      T = G010 / ( G010 - G110 );
-      Result.Pos = vec4( X0, Y1, Z0+T, 1 );
-      break;
+      T = G010 / ( G010 - G110 );  P = vec3( X0, Y1, Z0+T );  break;
     case 11:
-      T = G011 / ( G011 - G111 );
-      Result.Pos = vec4( X1, Y1, Z0+T, 1 );
-      break;
+      T = G011 / ( G011 - G111 );  P = vec3( X1, Y1, Z0+T );  break;
   }
 
-  Result.Nor = GetGrad( Result.Pos.xyz );
+  vec3 Sd = _BricS / _BricsN;
 
-  Result.Pos = vec4( Result.Pos.xyz / 100.0, 1 );
+  Result.Pos = vec4( P * Sd - _BricS / 2, 1 );
+  Result.Nor = vec4( GetGrad( P ) / Sd  , 0 );
 
   return Result;
 }

@@ -20,9 +20,9 @@ _Result;
 
 void main()
 {
-  const int   SZ        = _BricsN.y * _BricsN.x;
-  const int   SY        =             _BricsN.x;
-  const int   I         = gl_VertexID;
+  const int SZ = _BricsN.y * _BricsN.x;
+  const int SY =             _BricsN.x;
+  const int I  = gl_VertexID;
 
   ivec3 B;
   int   J;
