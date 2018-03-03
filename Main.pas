@@ -64,7 +64,7 @@ begin
           Angl := DegToRad( 60{°} );
 
           Pose := TSingleM4.RotateX( DegToRad( -45 ) )
-                * TSingleM4.Translate( 0, 0, +2 );
+                * TSingleM4.Translate( 0, 0, +3 );
      end;
 
      GLViewer1.Camera := _Camera1;
