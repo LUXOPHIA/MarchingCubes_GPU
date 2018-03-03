@@ -91,13 +91,20 @@ begin
 
      with _Engine do
      begin
+          with Verters do
+          begin
+               Del( 0{BinP} );
+               Del( 1{BinP} );
+               Del( 2{BinP} );
+          end;
+
           with Imagers do
           begin
                Add( 1{BinP}, '_Imager'{Name} );
           end;
      end;
 
-     _Imager := TGLBricer2D_TAlphaColorF  .Create;
+     _Imager := TGLBricer2D_TAlphaColorF.Create;
 end;
 
 destructor TMarcubesMatery.Destroy;
@@ -137,10 +144,8 @@ begin
 end;
 
 procedure TMarcubes.SetSizeX( const SizeX_:Single );
-var
-   S :TSingle3D;
 begin
-     S := _Size[ 0 ];  S.X := SizeX_;  _Size[ 0 ] := S;
+     _Size[ 0 ] := TSingle3D.Create( SizeX_, SizeY, SizeZ );
 end;
 
 function TMarcubes.GetSizeY :Single;
@@ -149,10 +154,8 @@ begin
 end;
 
 procedure TMarcubes.SetSizeY( const SizeY_:Single );
-var
-   S :TSingle3D;
 begin
-     S := _Size[ 0 ];  S.Y := SizeY_;  _Size[ 0 ] := S;
+     _Size[ 0 ] := TSingle3D.Create( SizeX, SizeY_, SizeZ );
 end;
 function TMarcubes.GetSizeZ :Single;
 begin
@@ -160,10 +163,8 @@ begin
 end;
 
 procedure TMarcubes.SetSizeZ( const SizeZ_:Single );
-var
-   S :TSingle3D;
 begin
-     S := _Size[ 0 ];  S.Z := SizeZ_;  _Size[ 0 ] := S;
+     _Size[ 0 ] := TSingle3D.Create( SizeX, SizeY, SizeZ_ );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
