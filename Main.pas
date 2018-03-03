@@ -104,18 +104,6 @@ begin
                Assert( Status, Errors.Text );
           end;
 
-          with Engine do
-          begin
-               with Verters do
-               begin
-                    Del( 0{BinP} );
-                    Del( 1{BinP} );
-                    Del( 2{BinP} );
-               end;
-
-               Assert( Status, Errors.Text );
-          end;
-
           with Imager do
           begin
                LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
