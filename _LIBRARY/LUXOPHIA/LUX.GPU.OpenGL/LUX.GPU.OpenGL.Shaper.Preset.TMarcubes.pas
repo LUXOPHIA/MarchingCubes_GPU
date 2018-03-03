@@ -5,6 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D2, LUX.D3, LUX.M4,
      LUX.GPU.OpenGL,
+     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
      LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
      LUX.GPU.OpenGL.Atom.Imager.D3.Preset,
      LUX.GPU.OpenGL.Matery,
@@ -40,9 +41,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _Grider :TGLGrider3D_Single;
-       _SizeX  :Single;
-       _SizeY  :Single;
-       _SizeZ  :Single;
+       _Size   :TGLUnifor<TSingle3D>;
        ///// アクセス
        function GetSizeX :Single;
        procedure SetSizeX( const SizeX_:Single );
@@ -94,7 +93,6 @@ begin
      begin
           with Imagers do
           begin
-               Add( 0{BinP}, '_Voxels'{Name} );
                Add( 1{BinP}, '_Imager'{Name} );
           end;
      end;
@@ -135,32 +133,37 @@ end;
 
 function TMarcubes.GetSizeX :Single;
 begin
-     Result := _SizeX;
+     Result := _Size[ 0 ].X;
 end;
 
 procedure TMarcubes.SetSizeX( const SizeX_:Single );
+var
+   S :TSingle3D;
 begin
-     _SizeX := SizeX_;
+     S := _Size[ 0 ];  S.X := SizeX_;  _Size[ 0 ] := S;
 end;
 
 function TMarcubes.GetSizeY :Single;
 begin
-     Result := _SizeY;
+     Result := _Size[ 0 ].Y;
 end;
 
 procedure TMarcubes.SetSizeY( const SizeY_:Single );
+var
+   S :TSingle3D;
 begin
-     _SizeY := SizeY_;
+     S := _Size[ 0 ];  S.Y := SizeY_;  _Size[ 0 ] := S;
 end;
-
 function TMarcubes.GetSizeZ :Single;
 begin
-     Result := _SizeZ;
+     Result := _Size[ 0 ].Z;
 end;
 
 procedure TMarcubes.SetSizeZ( const SizeZ_:Single );
+var
+   S :TSingle3D;
 begin
-     _SizeZ := SizeZ_;
+     S := _Size[ 0 ];  S.Z := SizeZ_;  _Size[ 0 ] := S;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -170,12 +173,26 @@ begin
      inherited;
 
      _Grider := TGLGrider3D_Single.Create;
+     _Size   := TGLUnifor<TSingle3D>.Create( GL_STATIC_DRAW );  _Size.Count := 1;
 
      _Matery := TMarcubesMatery.Create;
 
-     SizeX  := 10;
-     SizeY  := 10;
-     SizeZ  := 10;
+     with _Matery.Engine do
+     begin
+          with Imagers do
+          begin
+               Add( 0{BinP}, '_Voxels'{Name} );
+          end;
+
+          with Unifors do
+          begin
+               Add( 4{BinP}, 'TBricS'{Name} );
+          end;
+     end;
+
+     SizeX := 2;
+     SizeY := 2;
+     SizeZ := 2;
 
      with Grider.Texels do
      begin
@@ -188,6 +205,7 @@ end;
 destructor TMarcubes.Destroy;
 begin
      _Grider.DisposeOf;
+     _Size  .DisposeOf;
 
      inherited;
 end;
@@ -199,11 +217,13 @@ begin
      inherited;
 
      _Grider.Use( 0 );
+     _Size  .Use( 4 );
 end;
 
 procedure TMarcubes.EndDraw;
 begin
      _Grider.Unuse( 0 );
+     _Size  .Unuse( 4 );
 
      inherited;
 end;
