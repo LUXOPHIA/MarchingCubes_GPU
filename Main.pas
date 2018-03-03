@@ -83,31 +83,11 @@ procedure TForm1.MakeMatery;
 begin
      with _Shaper.Matery as TMarcubesMatery do
      begin
-          with ShaderV do
-          begin
-               Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+          ShaderV.Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+          ShaderG.Source.LoadFromFile( '..\..\_DATA\ShaderG.glsl' );
+          ShaderF.Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
 
-               Assert( Status, Errors.Text );
-          end;
-
-          with ShaderG do
-          begin
-               Source.LoadFromFile( '..\..\_DATA\ShaderG.glsl' );
-
-               Assert( Status, Errors.Text );
-          end;
-
-          with ShaderF do
-          begin
-               Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
-
-               Assert( Status, Errors.Text );
-          end;
-
-          with Imager do
-          begin
-               LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
-          end;
+          Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
      end;
 end;
 
