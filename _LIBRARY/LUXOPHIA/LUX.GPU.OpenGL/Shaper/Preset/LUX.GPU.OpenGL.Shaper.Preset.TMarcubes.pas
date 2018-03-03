@@ -178,17 +178,24 @@ begin
 
      _Matery := TMarcubesMatery.Create;
 
-     with _Matery.Engine do
+     with _Matery as TMarcubesMatery do
      begin
-          with Imagers do
+          with Engine do
           begin
-               Add( 0{BinP}, '_Voxels'{Name} );
+               with Imagers do
+               begin
+                    Add( 0{BinP}, '_Voxels'{Name} );
+               end;
+
+               with Unifors do
+               begin
+                    Add( 4{BinP}, 'TBricS'{Name} );
+               end;
           end;
 
-          with Unifors do
-          begin
-               Add( 4{BinP}, 'TBricS'{Name} );
-          end;
+          ShaderV.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_ShaderV_glsl' );
+          ShaderG.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_ShaderG_glsl' );
+          ShaderF.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_ShaderF_glsl' );
      end;
 
      SizeX := 2;
