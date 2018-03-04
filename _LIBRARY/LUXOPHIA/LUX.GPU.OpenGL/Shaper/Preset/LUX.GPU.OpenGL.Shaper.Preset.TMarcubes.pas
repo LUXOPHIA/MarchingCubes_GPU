@@ -204,6 +204,9 @@ begin
 
      with Grider.Texels do
      begin
+          MargsX := 1;
+          MargsY := 1;
+          MargsZ := 1;
           BricsX := 100;
           BricsY := 100;
           BricsZ := 100;
