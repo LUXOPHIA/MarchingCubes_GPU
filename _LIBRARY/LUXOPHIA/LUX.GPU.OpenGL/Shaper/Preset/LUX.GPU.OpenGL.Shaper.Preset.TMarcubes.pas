@@ -66,7 +66,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMarcubes = class( TGLShaperZeroPoins )
      private
      protected
-       _CubesM :IMarcubesMateryCells;
+       _MaterC :IMarcubesMateryCells;
        _Grider :TGLGrider3D_Single;
        _Size   :TGLUnifor<TSingle3D>;
        _LineS  :Single;
@@ -237,7 +237,7 @@ begin
      _Size   := TGLUnifor<TSingle3D>.Create( GL_STATIC_DRAW );  _Size.Count := 1;
 
      _Matery := TMarcubesMateryFaces.Create;
-     _CubesM := TMarcubesMateryCells.Create;
+     _MaterC := TMarcubesMateryCells.Create;
 
      with _Matery as TMarcubesMateryFaces do
      begin
@@ -259,7 +259,7 @@ begin
           ShaderF.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_FacesF_glsl' );
      end;
 
-     with _CubesM do
+     with _MaterC do
      begin
           with Engine do
           begin
@@ -316,13 +316,13 @@ end;
 
 procedure TMarcubes.EndDraw;
 begin
-     _CubesM.Use;
+     _MaterC.Use;
 
        glLineWidth( _LineS );
 
        DrawMain;
 
-     _CubesM.Unuse;
+     _MaterC.Unuse;
 
      _Grider.Unuse( 0 );
      _Size  .Unuse( 4 );
