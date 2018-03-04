@@ -44,9 +44,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetDepth :IGLChaner;
        procedure SetDepth( const Depth_:IGLChaner );
        function GetSizeX :Integer;
-       procedure SetSizeX( const SizeX_:Integer );
+       procedure SetSizeX( const SizeX_:Integer ); virtual;
        function GetSizeY :Integer;
-       procedure SetSizeY( const SizeY_:Integer );
+       procedure SetSizeY( const SizeY_:Integer ); virtual;
        ///// メソッド
        procedure InitDepth( const Depth_:IGLChaner ); virtual; abstract;
        procedure InitColor( const Color_:IGLChaner ); virtual; abstract;
