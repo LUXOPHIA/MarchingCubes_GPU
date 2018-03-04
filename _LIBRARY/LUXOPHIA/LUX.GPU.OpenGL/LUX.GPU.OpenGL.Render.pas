@@ -27,20 +27,24 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _SizeX  :Integer;
        _SizeY  :Integer;
        _Viewer :TGLUnifor<TSingleM4>;
+       _Color  :TAlphaColorF;
        ///// アクセス
        function GetSizeX :Integer;
        procedure SetSizeX( const SizeX_:Integer );
        function GetSizeY :Integer;
        procedure SetSizeY( const SizeY_:Integer );
+       function GetColor :TAlphaColorF;
+       procedure SetColor( const Color_:TAlphaColorF );
        ///// メソッド
        procedure FitWindow;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Camera :TGLCamera read   _Camera write   _Camera;
-       property SizeX  :Integer   read GetSizeX  write SetSizeX ;
-       property SizeY  :Integer   read GetSizeY  write SetSizeY ;
+       property Camera  :TGLCamera    read   _Camera write   _Camera;
+       property SizeX   :Integer      read GetSizeX  write SetSizeX ;
+       property SizeY   :Integer      read GetSizeY  write SetSizeY ;
+       property Color   :TAlphaColorF read GetColor  write SetColor ;
        ///// メソッド
        procedure Render;
        function MakeScreenShot :FMX.Graphics.TBitmap;
@@ -96,6 +100,18 @@ begin
      FitWindow;
 end;
 
+//------------------------------------------------------------------------------
+
+function TGLRender.GetColor :TAlphaColorF;
+begin
+     Result := _Color;
+end;
+
+procedure TGLRender.SetColor( const Color_:TAlphaColorF );
+begin
+     _Color := Color_;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TGLRender.FitWindow;
@@ -119,6 +135,8 @@ begin
 
      SizeX := 1920;
      SizeY := 1080;
+
+     _Color := TAlphaColorF.Create( 0, 0, 0, 1 );
 end;
 
 destructor TGLRender.Destroy;
@@ -137,7 +155,7 @@ procedure TGLRender.Render;
 begin
        _FrameN.Bind;
 
-         glClearColor( 1, 0, 0, 1 );
+         with _Color do glClearColor( R, G, B, A );
 
          glClear( GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT );
 
@@ -173,8 +191,10 @@ begin
           C := @Cs[ 0 ];
 
           _Frame1.Bind;
+
             glReadBuffer( GL_COLOR_ATTACHMENT0 );
             glReadPixels( 0, 0, _SizeX, _SizeY, GL_BGRA, GL_UNSIGNED_BYTE, C );
+
           _Frame1.Unbind;
 
           Map( TMapAccess.Write, Bs );
