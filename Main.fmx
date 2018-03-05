@@ -41,7 +41,7 @@ object Form1: TForm1
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      Text = 'Rndering'
+      Text = 'Rendering'
       OnClick = Button1Click
     end
   end
