@@ -35,9 +35,9 @@ uniform sampler3D _Grider;
  -1     0    +1    +2    +3    +4    +5 = ItemGrids Coordinate
   +-----+-----+-----+-----+-----+-----+
   |     |     |     |     |     |     |
-  |  1  |  2  |  3  |  4  |  5  |  6  | = ElemBricsN = ElemGridsN-1
-  +-----o-----o-----o-----o-----o-----+
   1     2     3     4     5     6     7 = ElemGridsN
+  +-----o-----o-----o-----o-----o-----+
+  |  1  |  2  |  3  |  4  |  5  |  6  | = ElemBricsN = ElemGridsN-1
   |     |     |     |     |     |     |
   +-----o-----o-----o-----o-----o-----+
   |     |     |     |     |     |     |
