@@ -47,9 +47,9 @@ uniform sampler3D _Grider;
   |     |     |     |     |     |     |
   +-----o-----o-----o-----o-----o-----+
   |     |     |     |     |     |     |
-  |     |  1  |  2  |  3  |  4  |     | = ItemBricsN = ItemGridsN-1
-  +-----o-----o-----o-----o-----o-----+
   |     1     2     3     4     5     | = ItemGridsN = ElemBricsN-1
+  +-----o-----o-----o-----o-----o-----+
+  |     |  1  |  2  |  3  |  4  |     | = ItemBricsN = ItemGridsN-1
   |     |     |     |     |     |     |
   +-----+-----+-----+-----+-----+-----+
   0    1/6   2/6   3/6   4/6   5/6    1 = Texture Coordinate
