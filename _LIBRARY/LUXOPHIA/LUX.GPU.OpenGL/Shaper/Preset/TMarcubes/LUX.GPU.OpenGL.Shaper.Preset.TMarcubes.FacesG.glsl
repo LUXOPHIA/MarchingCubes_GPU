@@ -395,10 +395,10 @@ vec3 GetGrad( vec3 P )
 
 //------------------------------------------------------------------------------
 
-void AddPoin( TPoin Poin_ )
+void AddPoin( TPoin Poin )
 {
-  _Result.Pos =                     _ShaperPose     * Poin_.Pos;
-  _Result.Nor = transpose( inverse( _ShaperPose ) ) * Poin_.Nor;
+  _Result.Pos =                     _ShaperPose     * Poin.Pos;
+  _Result.Nor = transpose( inverse( _ShaperPose ) ) * Poin.Nor;
 
   gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
 
@@ -407,11 +407,11 @@ void AddPoin( TPoin Poin_ )
 
 //------------------------------------------------------------------------------
 
-void AddFace( TPoin P1_, TPoin P2_, TPoin P3_ )
+void AddFace( TPoin P1, TPoin P2, TPoin P3 )
 {
-  AddPoin( P1_ );
-  AddPoin( P2_ );
-  AddPoin( P3_ );
+  AddPoin( P1 );
+  AddPoin( P2 );
+  AddPoin( P3 );
 
   EndPrimitive();
 }
@@ -492,15 +492,13 @@ void main()
 {
   const int K = CubeKind();
 
-  TPoin P1, P2, P3;
-
   for( int I = 0; I < TRIASTABLE[ K ].TsN; I++ )
   {
     ivec3 P = TRIASTABLE[ K ].Ts[ I ];
 
-    P1 = MakePoin( P.x );
-    P2 = MakePoin( P.y );
-    P3 = MakePoin( P.z );
+    TPoin P1 = MakePoin( P.x );
+    TPoin P2 = MakePoin( P.y );
+    TPoin P3 = MakePoin( P.z );
 
     AddFace( P1, P2, P3 );
   }

@@ -95,9 +95,9 @@ float GetGrids( int X, int Y, int Z )
 
 //------------------------------------------------------------------------------
 
-void AddPoin( vec3 Pos_ )
+void AddPoin( vec3 Pos )
 {
-  _Result.Pos = _ShaperPose * vec4( Pos_ * _BricS - _GriderS / 2, 1 );
+  _Result.Pos = _ShaperPose * vec4( Pos * _BricS - _GriderS / 2, 1 );
 
   gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
 
@@ -106,10 +106,10 @@ void AddPoin( vec3 Pos_ )
 
 //------------------------------------------------------------------------------
 
-void AddEdge( vec3 Pos1_, vec3 Pos2_ )
+void AddEdge( vec3 Pos1, vec3 Pos2 )
 {
-  AddPoin( Pos1_ );
-  AddPoin( Pos2_ );
+  AddPoin( Pos1 );
+  AddPoin( Pos2 );
 
   EndPrimitive();
 }
