@@ -445,14 +445,14 @@ int CubeKind()
 
 //------------------------------------------------------------------------------
 
-TPoin MakePoin( int I_ )
+TPoin MakePoin( int I )
 {
   TPoin Result;
 
   vec3 P;
 
   float T;
-  switch ( I_ )
+  switch ( I )
   {
     case  0:
       T = G000 / ( G000 - G001 );  P = vec3( X0+T, Y0, Z0 );  break;
