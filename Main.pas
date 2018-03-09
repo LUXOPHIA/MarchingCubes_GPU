@@ -20,6 +20,7 @@ type
     GLViewer1: TGLViewer;
     Panel1: TPanel;
     Button1: TButton;
+    ScrollBar1: TScrollBar;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure GLViewer1DblClick(Sender: TObject);
@@ -27,6 +28,7 @@ type
     procedure GLViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure GLViewer1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure Button1Click(Sender: TObject);
+    procedure ScrollBar1Change(Sender: TObject);
   private
     { private 宣言 }
     _MouseA :TSingle2D;
@@ -155,13 +157,19 @@ begin
                BricsZ := 64;
           end;
 
-          with Matery as TMarcubesMateryFaces do
+          Matery := TMarcubesMateryFacesMIR.Create;
+
+          with Matery as TMarcubesMateryFacesMIR do
           begin
                Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
           end;
+
+          IsShowCubes := True;
      end;
 
      MakeVoxels( 0 );
+
+     ScrollBar1Change( Sender )
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -212,6 +220,15 @@ begin
      GLViewer1MouseMove( Sender, Shift, X, Y );
 
      _MouseS := [];
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.ScrollBar1Change(Sender: TObject);
+begin
+     _Shaper.Threshold := ScrollBar1.Value;
+
+     GLViewer1.Repaint;
 end;
 
 //------------------------------------------------------------------------------
