@@ -373,7 +373,7 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Octree.Atom.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Framer.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Chaner.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Render.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\_FMX\LUX.GPU.OpenGL.Render.pas"/>
         <RcItem Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.Cubes_F.glsl">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>

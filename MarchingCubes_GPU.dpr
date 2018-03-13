@@ -63,7 +63,7 @@ uses
   LUX.Data.Octree.Atom in '_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Octree.Atom.pas',
   LUX.GPU.OpenGL.Atom.Framer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Framer.pas',
   LUX.GPU.OpenGL.Atom.Chaner in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Chaner.pas',
-  LUX.GPU.OpenGL.Render in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Render.pas';
+  LUX.GPU.OpenGL.Render in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\_FMX\LUX.GPU.OpenGL.Render.pas';
 
 {$R *.res}
 
