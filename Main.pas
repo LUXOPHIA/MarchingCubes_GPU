@@ -19,7 +19,6 @@ type
   TForm1 = class(TForm)
     GLViewer1: TGLViewer;
     Panel1: TPanel;
-    Button1: TButton;
     ScrollBar1: TScrollBar;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -27,7 +26,6 @@ type
     procedure GLViewer1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure GLViewer1MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure GLViewer1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    procedure Button1Click(Sender: TObject);
     procedure ScrollBar1Change(Sender: TObject);
   private
     { private 宣言 }
@@ -42,7 +40,7 @@ type
     ///// メソッド
     procedure MakeCamera;
     procedure MoveCamera;
-    procedure MakeVoxels( const Angle_:Single );
+    procedure MakeVoxels;
   end;
 
 var
@@ -101,15 +99,29 @@ begin
      Result := Pow2( Roo2( X2 + Y2 ) - 8 - A ) + Z2 - Pow2( 2 + 3 * A );
 end;
 
-procedure TForm1.MakeVoxels( const Angle_:Single );
+procedure TForm1.MakeVoxels;
 var
    X, Y, Z :Integer;
-   P, P2 :TSingle3D;
+   P :TSingle3D;
 begin
      with _Shaper do
      begin
           with Grider.Texels do
           begin
+               //    -1   0  +1  +2  +3  +4
+               //  -1 +---+---+---+---+---+
+               //     |///|///|///|///|///|
+               //   0 +---*---*---*---*---+
+               //     |///| 1 | 2 | 3 |///|  BricsX = 3 = GridsX-1
+               //  +1 +---*---*---*---*---+
+               //     |///|   |   |   |///|
+               //  +2 +---*---*---*---*---+
+               //     |///|   |   |   |///|
+               //  +3 +---*---*---*---*---+
+               //     |///|///|///|///|///|
+               //  +4 +---+---+---+---+---+
+               //         1   2   3   4      GridsX = 4 = BricsX+1
+
                for Z := -1 to GridsZ do
                begin
                     P.Z := 24 * ( Z / BricsZ - 0.5 );
@@ -122,15 +134,13 @@ begin
                          begin
                               P.X := 24 * ( X / BricsX - 0.5 );
 
-                              P2 := TSingleM4.RotateZ( Angle_ ).MultPos( P );
-
-                              Grids[ X, Y, Z ] := Pãodering( P2 );
+                              Grids[ X, Y, Z ] := Pãodering( P );
                          end;
                     end;
                end;
           end;
 
-          MakeModel;
+          MakeModel;  //ポリゴンモデル生成
      end;
 end;
 
@@ -167,7 +177,7 @@ begin
           IsShowCubes := True;
      end;
 
-     MakeVoxels( 0 );
+     MakeVoxels;
 
      ScrollBar1Change( Sender )
 end;
@@ -229,66 +239,6 @@ begin
      _Shaper.Threshold := ScrollBar1.Value;
 
      GLViewer1.Repaint;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.Button1Click(Sender: TObject);
-const
-     FrameN = 30{fps} * 60{s};
-var
-   R :TGLRender;
-   I, N :Integer;
-   T :SIngle;
-begin
-     R := TGLRender.Create;
-
-     with R do
-     begin
-          SizeX := 1920;
-          SizeY := 1080;
-
-          Camera := _Camera;
-     end;
-
-     for I := 0 to FrameN do
-     begin
-          T := ( 1 - Cos( Pi / FrameN * I ) ) / 2;
-
-          N := Round( Power( 2, ( 8 - 4 ) * ( 1 - Cos( P2i * 5 * T ) ) / 2 + 4 ) );
-
-          _Shaper.LineS := 16 / N;
-
-          with _Shaper.Grider.Texels do
-          begin
-               BricsX := N;
-               BricsY := N;
-               BricsZ := N;
-          end;
-
-          MakeVoxels( 4 * Pi2 * T );
-
-          with _Camera do
-          begin
-               Pose := TSingleM4.RotateY( 5 * Pi2 * T )
-                     * TSingleM4.RotateX( -P4i * Sin( 3 * Pi2 * T ) )
-                     * TSingleM4.Translate( 0, 0, ( 1 - 3 ) * ( 1 - Cos( Pi2 * T ) ) / 2 + 3 );
-          end;
-
-          with R do
-          begin
-               Render;
-
-               with MakeScreenShot do
-               begin
-                    SaveToFile( 'X:\_FRAMES\' + 'Marcubes' + I.ToString + '.bmp' );
-
-                    DisposeOF;
-               end;
-          end;
-     end;
-
-     R.DisposeOf;
 end;
 
 end. //######################################################################### ■
