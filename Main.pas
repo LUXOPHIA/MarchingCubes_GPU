@@ -124,15 +124,15 @@ begin
 
                for Z := -1 to GridsZ do
                begin
-                    P.Z := 24 * ( Z / BricsZ - 0.5 );
+                    P.Z := 24 * ( Z / CellsZ - 0.5 );
 
                     for Y := -1 to GridsY do
                     begin
-                         P.Y := 24 * ( Y / BricsY - 0.5 );
+                         P.Y := 24 * ( Y / CellsY - 0.5 );
 
                          for X := -1 to GridsX do
                          begin
-                              P.X := 24 * ( X / BricsX - 0.5 );
+                              P.X := 24 * ( X / CellsX - 0.5 );
 
                               Grids[ X, Y, Z ] := Pãodering( P );
                          end;
@@ -162,9 +162,9 @@ begin
 
           with Grider.Texels do
           begin
-               BricsX := 64;
-               BricsY := 64;
-               BricsZ := 64;
+               CellsX := 64;
+               CellsY := 64;
+               CellsZ := 64;
           end;
 
           Matery := TMarcubesMateryFacesMIR.Create;
