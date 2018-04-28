@@ -122,19 +122,19 @@ begin
                //  +4 +---+---+---+---+---+
                //         1   2   3   4      GridsX = 4 = BricsX+1
 
-               for Z := -1 to GridsZ do
+               for Z := -1 to PoinsZ do
                begin
                     P.Z := 24 * ( Z / CellsZ - 0.5 );
 
-                    for Y := -1 to GridsY do
+                    for Y := -1 to PoinsY do
                     begin
                          P.Y := 24 * ( Y / CellsY - 0.5 );
 
-                         for X := -1 to GridsX do
+                         for X := -1 to PoinsX do
                          begin
                               P.X := 24 * ( X / CellsX - 0.5 );
 
-                              Grids[ X, Y, Z ] := Pãodering( P );
+                              Poins[ X, Y, Z ] := Pãodering( P );
                          end;
                     end;
                end;
