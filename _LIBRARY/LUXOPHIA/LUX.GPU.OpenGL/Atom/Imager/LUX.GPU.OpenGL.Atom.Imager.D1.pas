@@ -40,7 +40,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D<_TTexel_>
 
-     TGLBricer1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TBricArray1D<_TTexel_>> )
+     TGLBricer1D<_TTexel_:record> = class( TGLImager1D<_TTexel_,TCellArray1D<_TTexel_>> )
      private
      protected
      public
