@@ -354,9 +354,9 @@ begin
           MargsX := 1;
           MargsY := 1;
           MargsZ := 1;
-          BricsX := 100;
-          BricsY := 100;
-          BricsZ := 100;
+          CellsX := 100;
+          CellsY := 100;
+          CellsZ := 100;
      end;
 
      SizeX := 2;
@@ -416,7 +416,7 @@ begin
      begin
           SendData;
 
-          with Texels do PoinsN := BricsX * BricsY * BricsZ;
+          with Texels do Self.PoinsN := CellsX * CellsY * CellsZ;
      end;
 end;
 
