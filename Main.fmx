@@ -54,4 +54,10 @@ object Form1: TForm1
       OnChange = ScrollBar1Change
     end
   end
+  object Timer1: TTimer
+    Interval = 10
+    OnTimer = Timer1Timer
+    Left = 25
+    Top = 25
+  end
 end
