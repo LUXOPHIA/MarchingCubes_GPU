@@ -331,7 +331,6 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Camera.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Scener.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Buffer.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Imager.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Progra.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Porter.pas"/>
@@ -357,15 +356,8 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D4.V4.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\FMX\LUX.FMX.Forms.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D2.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D3.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D1.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\LUX.GPU.OpenGL.Shaper.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\LUX.GPU.OpenGL.Matery.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D3\_FMX\LUX.GPU.OpenGL.Atom.Imager.D3.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D2\_FMX\LUX.GPU.OpenGL.Atom.Imager.D2.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D1\_FMX\LUX.GPU.OpenGL.Atom.Imager.D1.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Tree.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Octree.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\Lattice\LUX.Data.Lattice.T2.pas"/>
@@ -392,6 +384,14 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D3.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D1.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D2.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Texture.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D2.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D3.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D1.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D1\_FMX\LUX.GPU.OpenGL.Atom.Texture.D1.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D3\_FMX\LUX.GPU.OpenGL.Atom.Texture.D3.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D2\_FMX\LUX.GPU.OpenGL.Atom.Texture.D2.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Texture\_FMX\LUX.GPU.OpenGL.Matery.Texture.Preset.pas"/>
         <RcItem Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\TMarcubes\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.Cubes_F.glsl">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>

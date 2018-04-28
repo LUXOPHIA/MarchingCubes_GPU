@@ -15,7 +15,6 @@ uses
   LUX.GPU.OpenGL.Camera in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Camera.pas',
   LUX.GPU.OpenGL.Scener in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Scener.pas',
   LUX.GPU.OpenGL.Atom.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Buffer.pas',
-  LUX.GPU.OpenGL.Atom.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Imager.pas',
   LUX.GPU.OpenGL.Atom in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.pas',
   LUX.GPU.OpenGL.Atom.Progra in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Progra.pas',
   LUX.GPU.OpenGL.Atom.Porter in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Porter.pas',
@@ -41,15 +40,8 @@ uses
   LUX.D4.V4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4.V4.pas',
   LUX.GPU.OpenGL.Shaper.Preset.TMarcubes in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\Preset\LUX.GPU.OpenGL.Shaper.Preset.TMarcubes.pas',
   LUX.FMX.Forms in '_LIBRARY\LUXOPHIA\LUX\FMX\LUX.FMX.Forms.pas',
-  LUX.GPU.OpenGL.Atom.Imager.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D2.pas',
-  LUX.GPU.OpenGL.Atom.Imager.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D3.pas',
-  LUX.GPU.OpenGL.Atom.Imager.D1 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D1.pas',
   LUX.GPU.OpenGL.Shaper.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\LUX.GPU.OpenGL.Shaper.Preset.pas',
   LUX.GPU.OpenGL.Matery.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\LUX.GPU.OpenGL.Matery.Preset.pas',
-  LUX.GPU.OpenGL.Atom.Imager.D3.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D3\_FMX\LUX.GPU.OpenGL.Atom.Imager.D3.Preset.pas',
-  LUX.GPU.OpenGL.Atom.Imager.D2.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D2\_FMX\LUX.GPU.OpenGL.Atom.Imager.D2.Preset.pas',
-  LUX.GPU.OpenGL.Atom.Imager.D1.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D1\_FMX\LUX.GPU.OpenGL.Atom.Imager.D1.Preset.pas',
-  LUX.GPU.OpenGL.Matery.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas',
   LUX.Data.Tree in '_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Tree.pas',
   LUX.Data.Octree in '_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Octree.pas',
   LUX.Data.Lattice.T2 in '_LIBRARY\LUXOPHIA\LUX\Data\Lattice\LUX.Data.Lattice.T2.pas',
@@ -75,7 +67,15 @@ uses
   LUX.GPU.OpenGL.Atom.Image in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Image.pas',
   LUX.GPU.OpenGL.Atom.Image.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D3.pas',
   LUX.GPU.OpenGL.Atom.Image.D1 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D1.pas',
-  LUX.GPU.OpenGL.Atom.Image.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D2.pas';
+  LUX.GPU.OpenGL.Atom.Image.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D2.pas',
+  LUX.GPU.OpenGL.Atom.Texture in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Texture.pas',
+  LUX.GPU.OpenGL.Atom.Texture.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D2.pas',
+  LUX.GPU.OpenGL.Atom.Texture.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D3.pas',
+  LUX.GPU.OpenGL.Atom.Texture.D1 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\LUX.GPU.OpenGL.Atom.Texture.D1.pas',
+  LUX.GPU.OpenGL.Atom.Texture.D1.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D1\_FMX\LUX.GPU.OpenGL.Atom.Texture.D1.Preset.pas',
+  LUX.GPU.OpenGL.Atom.Texture.D3.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D3\_FMX\LUX.GPU.OpenGL.Atom.Texture.D3.Preset.pas',
+  LUX.GPU.OpenGL.Atom.Texture.D2.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Texture\D2\_FMX\LUX.GPU.OpenGL.Atom.Texture.D2.Preset.pas',
+  LUX.GPU.OpenGL.Matery.Texture.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Texture\_FMX\LUX.GPU.OpenGL.Matery.Texture.Preset.pas';
 
 {$R *.res}
 
