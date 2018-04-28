@@ -50,7 +50,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D<_TTexel_>
 
-     TGLGrider3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TGridArray3D<_TTexel_>> )
+     TGLGrider3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TPoinArray3D<_TTexel_>> )
      private
      protected
      public
