@@ -412,12 +412,9 @@ end;
 
 procedure TMarcubes.MakeModel;
 begin
-     with _Grider do
-     begin
-          SendData;
+     _Grider.SendData;
 
-          with Texels do Self.PoinsN := CellsX * CellsY * CellsZ;
-     end;
+     PoinsN := _Grider.Texels.CellsN;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
