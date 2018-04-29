@@ -173,7 +173,7 @@ begin
 
           with Matery as TMarcubesMateryFacesMIR do
           begin
-               Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
+               Textur.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
           end;
 
           IsShowCubes := True;
