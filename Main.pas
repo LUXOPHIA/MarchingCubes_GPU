@@ -108,7 +108,7 @@ var
 begin
      with _Shaper do
      begin
-          with Textur.Texels do
+          with Textur.Imager.Grider do
           begin
                //    -1   0  +1  +2  +3  +4
                //  -1 +---+---+---+---+---+
@@ -162,7 +162,7 @@ begin
           SizeY := 2.4;
           SizeZ := 2.4;
 
-          with Textur.Texels do
+          with Textur.Imager.Grider do
           begin
                CellsX := 64;
                CellsY := 64;
@@ -173,7 +173,7 @@ begin
 
           with Matery as TMarcubesMateryFacesMIR do
           begin
-               Textur.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
+               Textur.Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
           end;
 
           IsShowCubes := True;
