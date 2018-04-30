@@ -108,7 +108,7 @@ var
 begin
      with _Shaper do
      begin
-          with Grider.Texels do
+          with Textur.Texels do
           begin
                //    -1   0  +1  +2  +3  +4
                //  -1 +---+---+---+---+---+
@@ -162,7 +162,7 @@ begin
           SizeY := 2.4;
           SizeZ := 2.4;
 
-          with Grider.Texels do
+          with Textur.Texels do
           begin
                CellsX := 64;
                CellsY := 64;
