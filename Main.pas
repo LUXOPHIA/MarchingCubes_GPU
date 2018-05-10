@@ -7,8 +7,10 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   System.Math.Vectors,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
+  Winapi.OpenGL, Winapi.OpenGLext,
   LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
   LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D3,
   LUX.GPU.OpenGL.Viewer,
   LUX.GPU.OpenGL.Scener,
   LUX.GPU.OpenGL.Camera,
@@ -103,12 +105,13 @@ end;
 
 procedure TForm1.MakeVoxels;
 var
+   D :TGLPoiPixIter3D<Single>;
    X, Y, Z :Integer;
    P :TSingle3D;
 begin
      with _Shaper do
      begin
-          with Textur.Imager.Grider do
+          with Textur.Imager.Grid do
           begin
                //    -1   0  +1  +2  +3  +4
                //  -1 +---+---+---+---+---+
@@ -124,6 +127,8 @@ begin
                //  +4 +---+---+---+---+---+
                //         1   2   3   4      GridsX = 4 = BricsX+1
 
+               D := Map( GL_WRITE_ONLY );
+
                for Z := -1 to PoinsZ do
                begin
                     P.Z := 24 * ( Z / CellsZ - 0.5 );
@@ -136,10 +141,12 @@ begin
                          begin
                               P.X := 24 * ( X / CellsX - 0.5 );
 
-                              Poins[ X, Y, Z ] := Pãodering( P );
+                              D[ X, Y, Z ] := Pãodering( P );
                          end;
                     end;
                end;
+
+               D.DisposeOf;
           end;
 
           MakeModel;  //ポリゴンモデル生成
@@ -162,7 +169,7 @@ begin
           SizeY := 2.4;
           SizeZ := 2.4;
 
-          with Textur.Imager.Grider do
+          with Textur.Imager.Grid do
           begin
                CellsX := 64;
                CellsY := 64;
