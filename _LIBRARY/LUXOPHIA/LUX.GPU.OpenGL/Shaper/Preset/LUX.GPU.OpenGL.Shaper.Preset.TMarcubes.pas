@@ -153,7 +153,7 @@ begin
 
           with UniBufs do
           begin
-               Add( 4{BinP}, 'TGriderS'{Name} );
+               Add( 4{BinP}, 'TGridSize'{Name} );
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
@@ -200,7 +200,7 @@ begin
 
           with UniBufs do
           begin
-               Add( 4{BinP}, 'TGriderS'{Name} );
+               Add( 4{BinP}, 'TGridSize'{Name} );
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
@@ -266,7 +266,7 @@ begin
 
           with UniBufs do
           begin
-               Add( 4{BinP}, 'TGriderS'{Name} );
+               Add( 4{BinP}, 'TGridSize'{Name} );
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
